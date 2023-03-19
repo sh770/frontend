@@ -5,9 +5,56 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: rgb(132, 156, 201);
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* header{
+  background-color: black;
+  padding: 1rem;
+}
+header a{
+  color: aqua;
+  font-weight: bold;
+  text-decoration: none;
+} */
+.products {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.product {
+  border: 1px solid red;
+  margin: 1rem;
+  padding: 1%;
+}
+
+.product>img {
+  width: 20%;
+  max-width: 25%;
+}
+
+.product-info {
+  padding: 1rem;
+  color: blue;
+  font-weight: bold;
+
+}
+
+main {
+  /* padding: 1rem; */
+  flex: 1;
+}
+
+.site-container {
+  min-height: 100vh;
+}
+
+.rating span {
+  color: #ffc000;
+   }
