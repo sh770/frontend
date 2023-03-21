@@ -3,6 +3,10 @@ import axios from 'axios';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Product from '../components/Product';
+import { Helmet } from 'react-helmet-async';
+import MessageBox from '../components/MessageBox';
+import LoadinBox from '../components/LoadinBox';
+import { getError } from '../utilis';
 
 const reduser = (state, action) => {
 
@@ -24,7 +28,7 @@ const reduser = (state, action) => {
 
 
 const HomeScreen = () => {
-    
+
     const [{ loading, error, products }, dispatch] = useReducer(reduser, {
         products: [],
         loading: true,
@@ -40,7 +44,7 @@ const HomeScreen = () => {
                 // console.log(reduser.data);
             }
             catch (err) {
-                dispatch({ type: 'FETCH_FAIL', payload: err.message });
+                dispatch({ type: 'FETCH_FAIL', payload: getError (err) });
             }
         };
 
@@ -51,11 +55,18 @@ const HomeScreen = () => {
 
     return (
         <div>
+            <Helmet>
+                <title>החנות בריאקט</title>
+            </Helmet>
             <h1>Featured Products</h1>
             <div className="products">
                 <Row>
                     {
-                        loading ? (<div>loading...</div>) : error ? (<div>{error}</div>) : (
+                        loading ? (
+                            <LoadinBox/>
+                        ) : error ? (
+                            <MessageBox variant='danger'>{error}</MessageBox>
+                        ) : (
 
                             products.map((prodact) => (
                                 <Col key={Product.slag} ms={2} md={4} lg={3} className="mb-3" >

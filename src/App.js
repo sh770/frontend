@@ -15,7 +15,7 @@ function App() {
           <Navbar bg="dark" variant="dark">
             <Container>
               <LinkContainer to="/">
-                <Navbar.Brand>webstore</Navbar.Brand>
+                <Navbar.Brand>החנות בריאקט</Navbar.Brand>
               </LinkContainer>
             </Container>
           </Navbar>
@@ -29,7 +29,7 @@ function App() {
           </Container>
         </main>
         <footer>
-          <div className="text-center">© כל הזכויות שמורות</div>
+          <div className="text-center"> כל הזכויות שמורות©</div>
         </footer>
       </div>
     </BrowserRouter>
