@@ -23,7 +23,7 @@ const Product = (props) => {
           {product.price} ₪ 
         </Card.Text>
 
-        <Button>add to card</Button>
+        <Button >add to card</Button>
       </Card.Body>
 
     </Card>

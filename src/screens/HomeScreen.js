@@ -53,6 +53,10 @@ const HomeScreen = () => {
     }, [])
     console.log(products);
 
+    
+
+
+
     return (
         <div>
             <Helmet>
