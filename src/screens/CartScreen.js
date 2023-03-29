@@ -21,7 +21,7 @@ const CartScreen = () => {
   const updateCartHandler = async (item, quantity) => {
     const { data } = await axios.get(`/api/product/${item._id}`);
     if (data.countInStock <= quantity) {
-      window.alert("Sorry. Product is out of stock");
+      window.alert("לצערנו. המוצר אזל מהמלאי");
       return;
     }
     ctxDispatch({
@@ -43,21 +43,21 @@ const CartScreen = () => {
 
     <div>
       <Helmet>
-        <title>Shopping Cart</title>
+        <title>עגלת קניות</title>
       </Helmet>
-      <h1>Shopping Cart</h1>
+      <h1>עגלת קניות</h1>
       <Row>
         <Col md={8}>
           {cartItems.length === 0 ? (
             <MessageBox>
-              Cart is empty. <Link to="/">Go Shopping</Link>
+              העגלה ריקה. <Link to="/">עבור לחנות</Link>
             </MessageBox>
           ) : (
             <ListGroup>
               {cartItems.map((item) => (
                 <ListGroup.Item key={item._id}>
                   <Row className="align-items-center">
-                    <Col md={3}>
+                    <Col md={2}>
                       <img
                         src={item.image}
                         alt={item.name}
@@ -86,7 +86,7 @@ const CartScreen = () => {
                         <i className="fas fa-plus-circle"></i>
                       </Button>
                     </Col>
-                    <Col md={3}>${item.price}</Col>
+                    <Col md={3}>₪{item.price}</Col>
                     <Col md={2}>
                       <Button variant="light" onClick={() => removeItemHandler(item)}>
                         <i className="fas fa-trash"></i>
@@ -104,8 +104,8 @@ const CartScreen = () => {
               <ListGroup variant="flush">
                 <ListGroup.Item>
                   <h3>
-                    Subtotal ({cartItems.reduce((a, c) => a + c.quantity, 0)}{" "}
-                    items) : $
+                    סך הכל ({cartItems.reduce((a, c) => a + c.quantity, 0)}{" "}
+                    פריטים) : ₪
                     {cartItems.reduce((a, c) => a + c.price * c.quantity, 0)}
                   </h3>
                 </ListGroup.Item>
@@ -117,7 +117,7 @@ const CartScreen = () => {
                       variant="primary"
                       disabled={cartItems.length === 0}
                     >
-                      Proceed to Checkout
+                      למעבר לתשלום
                     </Button>
                   </div>
                 </ListGroup.Item>

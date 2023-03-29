@@ -122,7 +122,7 @@ const ProductScreen = () => {
                   <Row>
                     <Col>Status:</Col>
                     <Col>
-                      {product.countInStock > 0 ? (
+                      {product.countInStock = 0 ? (
                         <Badge bg="success">זמין במלאי</Badge>
                       ) : (
                         <Badge bg="danger">אזל מהמלאי</Badge>

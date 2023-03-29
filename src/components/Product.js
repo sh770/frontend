@@ -23,7 +23,7 @@ const Product = (props) => {
     console.log(data)
 
     if (data.countInStock < quantity) {
-      window.alert('Product is out of stock')
+      window.alert('המוצר אזל מהמלאי')
       return;
     }
 
@@ -57,7 +57,7 @@ const Product = (props) => {
                         Out Of Stock
                     </Button>
                 ) : (
-                    <Button onClick={() => addToCartHandler(product)}>Add To Cart</Button>)}
+                    <Button onClick={() => addToCartHandler(product)}>הוסף לסל</Button>)}
              
       </Card.Body>
 

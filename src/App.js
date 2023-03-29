@@ -8,8 +8,9 @@ import Navbar from 'react-bootstrap/Navbar';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useContext } from 'react';
 import { Store } from './Store';
-import CartScreen from "./screen/CartScreen";
 import { Badge, Nav } from 'react-bootstrap';
+import CartScreen from './screens/CartScreen';
+
 
 
 function App() {
@@ -57,3 +58,4 @@ function App() {
 }
 
 export default App;
+
