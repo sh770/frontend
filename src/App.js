@@ -1,3 +1,4 @@
+import 'react-devtools'
 import './App.css';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import HomeScreen from './screens/HomeScreen';
@@ -7,6 +8,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useContext } from 'react';
 import { Store } from './Store';
+import CartScreen from "./screen/CartScreen";
 import { Badge, Nav } from 'react-bootstrap';
 
 
@@ -41,6 +43,7 @@ function App() {
           <Container>
             <Routes>
               <Route path='/product/:slug' element={<ProductScreen />}></Route>
+              <Route path="/cart" element={<CartScreen />} />
               <Route path='/' element={<HomeScreen />}></Route>
             </Routes>
           </Container>

@@ -63,3 +63,7 @@ main {
 .rating span {
   color: #ffc000;
 }
+
+.img-thumbnail {
+  height: 150px;
+}

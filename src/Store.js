@@ -4,7 +4,9 @@ export const Store = createContext();
 
 const initialstate = {
     cart: {
-        cartItems: [],
+        cartItems: localStorage.getItem('cartItems')
+            ? JSON.parse(localStorage.getItem('cartItems'))
+            : [],
     },
 };
 
@@ -18,26 +20,33 @@ const reducer = (state, action) => {
                 (item) => item._id === newItem._id
             );
 
-            const cartItems = existItem 
+            const cartItems = existItem
                 ? state.cart.cartItems.map(
-                    (item) => (item._id === existItem._id ? newItem : item) 
+                    (item) => (item._id === existItem._id ? newItem : item)
                 )
-                : [...state.cart.cartItems, newItem]; 
-
-        localStorage.setItem("cartItems", JSON.stringify(cartItems));
-
+                : [...state.cart.cartItems, newItem];
+            console.log(cartItems);
+            localStorage.setItem("cartItems", JSON.stringify(cartItems));
 
             return { ...state, cart: { ...state.cart, cartItems } };
 
-
+        case "CART_REMOVE_ITEM": {
+            const cartItems = state.cart.cartItems.filter(
+                (item) => item._id !== action.payload._id
+            );
+            console.log(cartItems)
+            localStorage.setItem("cartItems", JSON.stringify(cartItems));
+            return { ...state, cart: { ...state.cart, cartItems } };
+        }
 
         default:
             return state;
     }
-}
+};
 
 export const StoreProvider = (props) => {
     const [state, dispatch] = useReducer(reducer, initialstate);
     const value = { state, dispatch };
+    console.log(value);
     return <Store.Provider value={value}>{props.children}</Store.Provider>
 }
