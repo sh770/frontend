@@ -120,9 +120,9 @@ const ProductScreen = () => {
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <Row>
-                    <Col>Status:</Col>
+                    <Col>מצב:</Col>
                     <Col>
-                      {product.countInStock = 0 ? (
+                      {product.countInStock > 0 ? (
                         <Badge bg="success">זמין במלאי</Badge>
                       ) : (
                         <Badge bg="danger">אזל מהמלאי</Badge>
