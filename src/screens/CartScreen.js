@@ -43,14 +43,15 @@ const CartScreen = () => {
 
     <div>
       <Helmet>
-        <title>עגלת קניות</title>
+        <title>עגלת הקניות</title>
       </Helmet>
-      <h1>עגלת קניות</h1>
+      <h1>עגלת הקניות</h1>
       <Row>
         <Col md={8}>
           {cartItems.length === 0 ? (
-            <MessageBox>
-              העגלה ריקה. <Link to="/">עבור לחנות</Link>
+            <MessageBox className="d-grid">
+              העגלה ריקה.
+              <Button  variant="danger"><Link to="/" type="button"> עבור לחנות</Link></Button>
             </MessageBox>
           ) : (
             <ListGroup>
@@ -115,9 +116,7 @@ const CartScreen = () => {
                       onClick={checkoutHandler}
                       type="button"
                       variant="primary"
-                      disabled={cartItems.length === 0}
-                    >
-                      למעבר לתשלום
+                      disabled={cartItems.length === 0}> למעבר לתשלום
                     </Button>
                   </div>
                 </ListGroup.Item>
