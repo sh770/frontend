@@ -19,8 +19,8 @@ const CartScreen = () => {
   } = state;
 
   const updateCartHandler = async (item, quantity) => {
-    const { data } = await axios.get(`/api/product/${item._id}`);
-    if (data.countInStock <= quantity) {
+    const { data } = await axios.get(`/api/products/product/${item._id}`);
+    if (data.countInStock < quantity) {
       window.alert("לצערנו. המוצר אזל מהמלאי");
       return;
     }
