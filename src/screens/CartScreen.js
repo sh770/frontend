@@ -51,22 +51,21 @@ const CartScreen = () => {
           {cartItems.length === 0 ? (
 
             <MessageBox>
-                              <Col>
-                  <ListGroup.Item>
-                    <h2> העגלה ריקה.</h2>
-                  </ListGroup.Item>
-                </Col>
-                <Col>
-                  <ListGroup.Item>
-                    <Link to="/" >
-                      <Button
-                        type="button"
-                        variant="primary"
-                      > עבור לחנות
-                      </Button></Link>
-                  </ListGroup.Item>
-                </Col>
-              
+              <Col>
+                <ListGroup.Item>
+                  <h2> העגלה ריקה.</h2>
+                </ListGroup.Item>
+              </Col>
+              <Col>
+                <ListGroup.Item>
+                  <Link to="/" >
+                    <Button
+                      type="button"
+                      variant="primary"
+                    > עבור לחנות
+                    </Button></Link>
+                </ListGroup.Item>
+              </Col>
             </MessageBox>
           ) : (
             <ListGroup>
