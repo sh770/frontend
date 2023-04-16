@@ -8,20 +8,30 @@ import Navbar from 'react-bootstrap/Navbar';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useContext } from 'react';
 import { Store } from './Store';
-import { Badge, Nav } from 'react-bootstrap';
+import { Badge, Nav, NavDropdown } from 'react-bootstrap';
 import CartScreen from './screens/CartScreen';
 import SigninScreen from './screens/SigninScreen';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
 function App() {
 
-  const { state } = useContext(Store);
-  const { cart } = state;
+const { state, dispatch: ctxDispatch } = useContext(Store);
+const { cart, userInfo } = state;
+
+const signoutHandler = () => {
+  ctxDispatch({ type: 'USER_SIGNOUT' });
+  localStorage.removeItem('userInfo');
+  localStorage.removeItem('cartItems');
+  window.location.href = '/signin';
+};
 
   return (
     <BrowserRouter>
       <div className="d-flex flex-column site-container">
+      <ToastContainer position="top-center" limit={1} />
         <header >
           <Navbar bg="dark" variant="dark">
             <Container>
@@ -37,6 +47,28 @@ function App() {
                     </Badge>
                   )}
                 </Link>
+                {userInfo ? (
+                  <NavDropdown title={userInfo?.username} id="basic-nav-dropdown">
+                    <LinkContainer to="/profile">
+                      <NavDropdown.Item>פרופיל משתמש</NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to="/orderhistory">
+                      <NavDropdown.Item>הסטוריית קניות</NavDropdown.Item>
+                    </LinkContainer>
+                    <NavDropdown.Divider />
+                    <Link
+                      className="dropdown-item"
+                      to="#signout"
+                      onClick={signoutHandler}
+                    >
+                      התנתק
+                    </Link>
+                  </NavDropdown>
+                ) : (
+                  <Link className="nav-link" to="/signin">
+                    התחברות
+                  </Link>
+                )}
               </Nav>
             </Container>
           </Navbar>
