@@ -5,7 +5,7 @@ import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { getError } from '../utilis.js';
-import { Store } from '../Store';
+import { Store } from '../Store.js';
 import axios from 'axios';
 import { toast } from "react-toastify";
 

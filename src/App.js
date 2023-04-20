@@ -1,20 +1,22 @@
 import 'react-devtools'
 import './App.css';
+import 'react-toastify/dist/ReactToastify.css';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-import HomeScreen from './screens/HomeScreen';
-import ProductScreen from './screens/ProductScreen';
+import HomeScreen from './screen/HomeScreen';
+import ProductScreen from './screen/ProductScreen';
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useContext } from 'react';
 import { Store } from './Store';
 import { Badge, Nav, NavDropdown } from 'react-bootstrap';
-import CartScreen from './screens/CartScreen';
-import SigninScreen from './screens/SigninScreen';
+import CartScreen from './screen/CartScreen';
+import SigninScreen from './screen/SigninScreen';
 import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import ShippingAddressScreen from './screens/ShippingAddressScreen.js';
+import ShippingAddressScreen from './screen/ShippingAddressScreen.js';
 import SignupScreen from './components/SignupScreen';
+import PaymentMethodScreen from "./screen/PaymentMethodScreen";
+import PlaceOrderScreen from "./screen/PlaceOrderScreen";
 
 
 function App() {
@@ -26,6 +28,7 @@ const signoutHandler = () => {
   ctxDispatch({ type: 'USER_SIGNOUT' });
   localStorage.removeItem('userInfo');
   localStorage.removeItem('shippingAddress');
+  localStorage.removeItem('paymentMethod');
   localStorage.removeItem('cartItems');
   window.location.href = '/signin';
 };
@@ -83,6 +86,8 @@ const signoutHandler = () => {
               <Route path="/signin" element={<SigninScreen />} />
               <Route path="/shipping" element={<ShippingAddressScreen />} />
               <Route path="/signup" element={<SignupScreen />} />
+              <Route path="/payment" element={<PaymentMethodScreen />} />
+              <Route path="/placeorder" element={<PlaceOrderScreen />} />
               <Route path='/' element={<HomeScreen />}></Route>
             </Routes>
           </Container>
