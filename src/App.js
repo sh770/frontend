@@ -14,7 +14,7 @@ import SigninScreen from './screens/SigninScreen';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ShippingAddressScreen from './screens/ShippingAddressScreen.js';
-import SignupScreen from './screens/SignupScreen.js';
+import SignupScreen from './components/SignupScreen';
 
 
 function App() {

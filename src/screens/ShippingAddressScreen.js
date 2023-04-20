@@ -4,7 +4,7 @@ import { Store } from "../Store";
 import { Helmet } from "react-helmet-async";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import CheckoutSteps from "components/CheckoutSteps";
+import CheckoutSteps from "../components/CheckoutSteps";
 
 const ShippingAddressScreen = () => {
   const navigate = useNavigate();
@@ -46,7 +46,7 @@ const ShippingAddressScreen = () => {
   return (
     <div>
       <Helmet>Shipping Address</Helmet>
-      <CheckoutSteps step1 step2></CheckoutSteps>
+      <CheckoutSteps step1 step2 />
       <div className="container small-container">
         <h1 className="my-3">Shipping Address</h1>
         <Form onSubmit={submitHandler}>
