@@ -13,8 +13,8 @@ import CartScreen from './screens/CartScreen';
 import SigninScreen from './screens/SigninScreen';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import ShippingAddressScreen from "./screen/ShippingAddressScreen";
-import SignupScreen from "./screen/SignupScreen";
+import ShippingAddressScreen from './screens/ShippingAddressScreen.js';
+import SignupScreen from './screens/SignupScreen.js';
 
 
 function App() {
@@ -96,4 +96,3 @@ const signoutHandler = () => {
 }
 
 export default App;
-
