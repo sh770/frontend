@@ -14,9 +14,10 @@ import CartScreen from './screen/CartScreen';
 import SigninScreen from './screen/SigninScreen';
 import { ToastContainer } from 'react-toastify';
 import ShippingAddressScreen from './screen/ShippingAddressScreen.js';
-import SignupScreen from './components/SignupScreen';
+import SignupScreen from './screen/SignupScreen';
 import PaymentMethodScreen from "./screen/PaymentMethodScreen";
 import PlaceOrderScreen from "./screen/PlaceOrderScreen";
+import OrderScreen from './screen/OrderScreen';
 
 
 function App() {
@@ -88,6 +89,7 @@ const signoutHandler = () => {
               <Route path="/signup" element={<SignupScreen />} />
               <Route path="/payment" element={<PaymentMethodScreen />} />
               <Route path="/placeorder" element={<PlaceOrderScreen />} />
+              <Route path="/order/:id" element={<OrderScreen />} />
               <Route path='/' element={<HomeScreen />}></Route>
             </Routes>
           </Container>
