@@ -1,0 +1,1 @@
+netkil.cmd & npm start
