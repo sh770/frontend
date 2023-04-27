@@ -56,7 +56,7 @@ export default function ProfileScreen() {
     const sendCode = () => {
 
         if (email !== userInfo.email) {
-            toast.error("Email is not valid");
+            toast.error("האימייל אינו חוקי");
             return;
         }
 
