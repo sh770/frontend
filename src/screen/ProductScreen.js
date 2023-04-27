@@ -66,7 +66,7 @@ const ProductScreen = () => {
     console.log(data)
 
     if (data.countInStock < quantity) {
-        toast.error('המוצר אזל מהמלאי');
+        toast.info('המוצר אזל מהמלאי');
       return;
     }
 
