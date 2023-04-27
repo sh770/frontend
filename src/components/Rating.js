@@ -9,7 +9,7 @@ const Rating = (props) => {
         <span>  <i className={rating >= 3 ? 'fas fa-star' :rating >= 2.5 ? 'fas fa-star-half-alt' : 'far fa-star'}/>   </span>
         <span>  <i className={rating >= 4 ? 'fas fa-star' :rating >= 3.5 ? 'fas fa-star-half-alt' : 'far fa-star'}/>   </span>
         <span>  <i className={rating >= 5 ? 'fas fa-star' :rating >= 4.5 ? 'fas fa-star-half-alt' : 'far fa-star'}/>   </span>
-        <span> {numReviews} Reviews</span>
+        <span>ביקורות: {numReviews} </span>
         </div>
   );
 }

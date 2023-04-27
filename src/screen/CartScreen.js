@@ -10,6 +10,10 @@ import ListGroup from "react-bootstrap/ListGroup";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { getError } from '../utilis.js';
+
 
 const CartScreen = () => {
   const navigate = useNavigate();
@@ -21,7 +25,7 @@ const CartScreen = () => {
   const updateCartHandler = async (item, quantity) => {
     const { data } = await axios.get(`/api/products/product/${item._id}`);
     if (data.countInStock < quantity) {
-      window.alert("לצערנו. המוצר אזל מהמלאי");
+      toast.error("המוצר אזל מהמלאי");
       return;
     }
     ctxDispatch({

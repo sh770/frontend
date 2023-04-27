@@ -92,7 +92,7 @@ export default function ProfileScreen() {
             toast.error("Password does not match");
             return;
         }
-        else if (password.length < 8) {
+        else if (password.length < 1) {
             toast.error("Password should be 8 characters at least");
             return;
         }

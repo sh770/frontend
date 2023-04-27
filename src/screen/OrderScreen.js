@@ -12,6 +12,7 @@ import { Store } from '../Store';
 import { getError } from '../utilis';
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
 import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function reducer(state, action) {

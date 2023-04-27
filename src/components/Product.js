@@ -6,6 +6,8 @@ import Rating from './Rating';
 import axios from 'axios';
 import { useContext } from 'react';
 import { Store } from '../Store';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const Product = (props) => {
@@ -23,7 +25,7 @@ const Product = (props) => {
     console.log(data)
 
     if (data.countInStock < quantity) {
-      window.alert('המוצר אזל מהמלאי')
+      toast.error('המוצר אזל מהמלאי');
       return;
     }
 

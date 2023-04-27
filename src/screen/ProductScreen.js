@@ -13,6 +13,8 @@ import LoadinBox from "../components/LoadinBox";
 import MessageBox from "../components/MessageBox";
 import { getError } from "../utilis.js";
 import { Store } from '../Store.js';
+import { toast } from "react-toastify";
+
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -64,8 +66,7 @@ const ProductScreen = () => {
     console.log(data)
 
     if (data.countInStock < quantity) {
-        // <MessageBox variant='danger'> המוצר אזל מהמלאי </MessageBox>
-      window.alert('המוצר אזל מהמלאי')
+        toast.error('המוצר אזל מהמלאי');
       return;
     }
 
