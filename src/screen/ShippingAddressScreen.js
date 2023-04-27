@@ -45,13 +45,13 @@ const ShippingAddressScreen = () => {
 
   return (
     <div>
-      <Helmet>Shipping Address</Helmet>
+      <Helmet>כתובת למשלוח</Helmet>
       <CheckoutSteps step1 step2 />
       <div className="container small-container">
-        <h1 className="my-3">Shipping Address</h1>
+        <h1 className="my-3">כתובת למשלוח</h1>
         <Form onSubmit={submitHandler}>
           <Form.Group className="mb-3" controlId="fullName">
-            <Form.Label>Full Name</Form.Label>
+            <Form.Label>שם מלא</Form.Label>
             <Form.Control
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
@@ -59,7 +59,7 @@ const ShippingAddressScreen = () => {
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="address">
-            <Form.Label>Address</Form.Label>
+            <Form.Label>כתובת</Form.Label>
             <Form.Control
               value={address}
               onChange={(e) => setAddress(e.target.value)}
@@ -67,7 +67,7 @@ const ShippingAddressScreen = () => {
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="city">
-            <Form.Label>City</Form.Label>
+            <Form.Label>עיר</Form.Label>
             <Form.Control
               value={city}
               onChange={(e) => setCity(e.target.value)}
@@ -75,7 +75,7 @@ const ShippingAddressScreen = () => {
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="postalCode">
-            <Form.Label>Postal Code</Form.Label>
+            <Form.Label>מיקוד</Form.Label>
             <Form.Control
               value={postalCode}
               onChange={(e) => setPostalCode(e.target.value)}
@@ -83,7 +83,7 @@ const ShippingAddressScreen = () => {
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="country">
-            <Form.Label>Country</Form.Label>
+            <Form.Label>מדינה</Form.Label>
             <Form.Control
               value={country}
               onChange={(e) => setCountry(e.target.value)}
@@ -92,7 +92,7 @@ const ShippingAddressScreen = () => {
           </Form.Group>
           <div className="mb-3">
             <Button variant="primary" type="submit">
-              Continue
+              המשך
             </Button>
           </div>
         </Form>

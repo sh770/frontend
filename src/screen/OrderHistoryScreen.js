@@ -59,10 +59,10 @@ const OrderHistoryScreen = () => {
     return (
         <div>
             <Helmet>
-                <title>Order History</title>
+                <title>היסטוריית הזמנות</title>
             </Helmet>
 
-            <h1>Order History</h1>
+            <h1>היסטוריית הזמנות</h1>
             {loading ? (
                 <LoadinBox></LoadinBox>
             ) : error ? (
@@ -71,12 +71,12 @@ const OrderHistoryScreen = () => {
                 <table className="table">
                     <thead>
                         <tr>
-                            <th>ORDER ID</th>
-                            <th>ORDER DATE</th>
-                            <th>ORDER TOTAL</th>
-                            <th>PAID</th>
-                            <th>DELIVERED</th>
-                            <th>ACTIONS</th>
+                            <th>מספר הזמנה</th>
+                            <th>תאריך הזמנה</th>
+                            <th>הזמנה TOTAL</th>
+                            <th>שולם</th>
+                            <th>נמסר</th>
+                            <th>פעולות</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -85,11 +85,11 @@ const OrderHistoryScreen = () => {
                                 <td>{order._id}</td>
                                 <td>{order.createdAt.substring(0, 10)}</td>
                                 <td>{order.totalPrice.toFixed(2)}</td>
-                                <td>{order.isPaid ? order.paidAt.substring(0, 10) : 'No'}</td>
+                                <td>{order.isPaid ? order.paidAt.substring(0, 10) : 'לא'}</td>
                                 <td>
                                     {order.isDelivered
                                         ? order.deliveredAt.substring(0, 10)
-                                        : 'No'}
+                                        : 'לא'}
                                 </td>
                                 <td>
                                     <Button
@@ -99,7 +99,7 @@ const OrderHistoryScreen = () => {
                                             navigate(`/order/${order._id}`);
                                         }}
                                     >
-                                        Details
+                                        פרטים
                                     </Button>
                                 </td>
                             </tr>

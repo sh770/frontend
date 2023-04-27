@@ -123,18 +123,18 @@ export default function ProfileScreen() {
     return (
         <div className="container small-container">
             <Helmet>
-                <title>{userInfo.username} Profile</title>
+                <title>{userInfo.username} פרופיל</title>
             </Helmet>
 
-            <h1 className="my-3">{userInfo.username}'s Profile</h1>
+            <h1 className="my-3">הפרופיל של: {userInfo.username}</h1>
             <ListGroup>
                 <ListGroup.Item>
-                    <h6 className="my-3">Update Password:</h6>
+                    <h6 className="my-3">עדכון סיסמה:</h6>
                 </ListGroup.Item>
                 <ListGroup.Item>
                     <form>
                         <Form.Group className="mb-3" controlId="email">
-                            <Form.Label>Enter Email:</Form.Label>
+                            <Form.Label>הכנס מייל:</Form.Label>
                             <Form.Control
                                 type="email"
                                 onChange={(e) => setEmail(e.target.value)}
@@ -143,13 +143,13 @@ export default function ProfileScreen() {
                             />
                         </Form.Group>
                         <div className="mb-3">
-                            <Button type="button" onClick={sendCode} disabled={!email.length || email !== userInfo.email}>Send Code</Button>
+                            <Button type="button" onClick={sendCode} disabled={!email.length || email !== userInfo.email}>שלח קוד</Button>
                         </div>
                     </form>
                     {validEmail && (
                         <form>
                             <Form.Group className="mb-3" controlId="code">
-                                <Form.Label>Check Email For Code / Scan The QR:</Form.Label>
+                                <Form.Label>בדוק את הקוד במייל / או סרוק את הברקוד:</Form.Label>
                                 <div style={{ height: "auto", margin: "0 auto", maxWidth: 364, width: "100%" }}>
                                     <QRCode
                                         size={256}
@@ -162,7 +162,7 @@ export default function ProfileScreen() {
                                 </div>
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="code">
-                                <Form.Label>Enter Code:</Form.Label>
+                                <Form.Label>הכנס קוד:</Form.Label>
                                 <Form.Control
                                     type="text"
                                     onChange={(e) => setCode(e.target.value)}
@@ -171,14 +171,14 @@ export default function ProfileScreen() {
                                 />
                             </Form.Group>
                             <div className="mb-3">
-                                <Button type="button" onClick={codeCheck} disabled={!code.length}>Validate Code</Button>
+                                <Button type="button" onClick={codeCheck} disabled={!code.length}>בדוק קוד</Button>
                             </div>
                         </form>)}
                     {validCode && (
                         <form onSubmit={submitHandler}>
 
                             <Form.Group className="mb-3" controlId="password">
-                                <Form.Label>New Password</Form.Label>
+                                <Form.Label>הכנס סיסמה חדשה</Form.Label>
                                 <Form.Control
                                     type="password"
                                     onChange={(e) => setPassword(e.target.value)}
@@ -187,7 +187,7 @@ export default function ProfileScreen() {
                                 />
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="confirmPassword">
-                                <Form.Label>Confirm New Password</Form.Label>
+                                <Form.Label>אמת סיסמה חדשה</Form.Label>
                                 <Form.Control
                                     type="password"
                                     onChange={(e) => setConfirmPassword(e.target.value)}
@@ -196,7 +196,7 @@ export default function ProfileScreen() {
                                 />
                             </Form.Group>
                             <div className="mb-3">
-                                <Button type="submit" disabled={!password.length || !confirmPassword.length}>Update</Button>
+                                <Button type="submit" disabled={!password.length || !confirmPassword.length}>שמור סיסמה</Button>
                             </div>
                         </form>
                     )}

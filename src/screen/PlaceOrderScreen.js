@@ -86,37 +86,37 @@ const PlaceOrderScreen = () => {
         <div>
             <CheckoutSteps step1 step2 step3 step4></CheckoutSteps>
             <Helmet>
-                <title>Preview Order</title>
+                <title>תצוגת הזמנה</title>
             </Helmet>
-            <h1 className="my-3">Preview Order</h1>
+            <h1 className="my-3">תצוגת הזמנה</h1>
             <Row>
                 <Col md={8}>
                     <Card className="mb-3">
                         <Card.Body>
-                            <Card.Title>Shipping</Card.Title>
+                            <Card.Title>משלוח</Card.Title>
                             <Card.Text>
-                                <strong>Name:</strong> {cart.shippingAddress.fullName} <br />
-                                <strong>Address: </strong> {cart.shippingAddress.address},
+                                <strong>שם:</strong> {cart.shippingAddress.fullName} <br />
+                                <strong>כתובת: </strong> {cart.shippingAddress.address},
                                 {cart.shippingAddress.city}, {cart.shippingAddress.postalCode},
                                 {cart.shippingAddress.country}
                             </Card.Text>
-                            <Link to="/shipping">Edit</Link>
+                            <Link to="/shipping">ערוך</Link>
                         </Card.Body>
                     </Card>
 
                     <Card className="mb-3">
                         <Card.Body>
-                            <Card.Title>Payment</Card.Title>
+                            <Card.Title>תשלום</Card.Title>
                             <Card.Text>
-                                <strong>Method:</strong> {cart.paymentMethod}
+                                <strong>באמצעות:</strong> {cart.paymentMethod}
                             </Card.Text>
-                            <Link to="/payment">Edit</Link>
+                            <Link to="/payment">ערוך</Link>
                         </Card.Body>
                     </Card>
 
                     <Card className="mb-3">
                         <Card.Body>
-                            <Card.Title>Items</Card.Title>
+                            <Card.Title>פריטים</Card.Title>
                             <ListGroup variant="flush">
                                 {cart.cartItems.map((item) => (
                                     <ListGroup.Item key={item._id}>
@@ -132,45 +132,46 @@ const PlaceOrderScreen = () => {
                                             <Col md={3}>
                                                 <span>{item.quantity}</span>
                                             </Col>
-                                            <Col md={3}>${item.price}</Col>
+                                            <Col md={3}>₪{item.price}</Col>
                                         </Row>
                                     </ListGroup.Item>
                                 ))}
                             </ListGroup>
-                            <Link to="/cart">Edit</Link>
+                            <Link to="/cart">ערוך</Link>
                         </Card.Body>
                     </Card>
                 </Col>
                 <Col md={4}>
                     <Card>
                         <Card.Body>
-                            <Card.Title>Order Summary</Card.Title>
+                            <Card.Title>סיכום הזמנה
+                                </Card.Title>
                             <ListGroup variant="flush">
                                 <ListGroup.Item>
                                     <Row>
-                                        <Col>Items</Col>
-                                        <Col>${cart.itemsPrice.toFixed(2)}</Col>
+                                        <Col>פריטים</Col>
+                                        <Col>₪{cart.itemsPrice.toFixed(2)}</Col>
                                     </Row>
                                 </ListGroup.Item>
                                 <ListGroup.Item>
                                     <Row>
-                                        <Col>Shipping</Col>
-                                        <Col>${cart.shippingPrice.toFixed(2)}</Col>
+                                        <Col>משלוח</Col>
+                                        <Col>₪{cart.shippingPrice.toFixed(2)}</Col>
                                     </Row>
                                 </ListGroup.Item>
                                 <ListGroup.Item>
                                     <Row>
-                                        <Col>Tax</Col>
-                                        <Col>${cart.taxPrice.toFixed(2)}</Col>
+                                        <Col>מיסים</Col>
+                                        <Col>₪{cart.taxPrice.toFixed(2)}</Col>
                                     </Row>
                                 </ListGroup.Item>
                                 <ListGroup.Item>
                                     <Row>
                                         <Col>
-                                            <strong> Order Total</strong>
+                                            <strong> סך כל ההזמנה</strong>
                                         </Col>
                                         <Col>
-                                            <strong>${cart.totalPrice.toFixed(2)}</strong>
+                                            <strong>₪{cart.totalPrice.toFixed(2)}</strong>
                                         </Col>
                                     </Row>
                                 </ListGroup.Item>
@@ -181,7 +182,7 @@ const PlaceOrderScreen = () => {
                                             onClick={placeOrderHandler}
                                             disabled={cart.cartItems.length === 0}
                                         >
-                                            Place Order
+                                            בצע הזמנה
                                         </Button>
                                     </div>
                                     {loading && <LoadinBox></LoadinBox>}

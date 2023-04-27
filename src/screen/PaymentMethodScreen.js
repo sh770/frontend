@@ -35,9 +35,9 @@ const PaymentMethodScreen = () => {
       <CheckoutSteps step1 step2 step3></CheckoutSteps>
       <div className="container small-container">
         <Helmet>
-          <title>Payment Method</title>
+          <title>אמצעי תשלום</title>
         </Helmet>
-        <h1 className="my-3">Payment Method</h1>
+        <h1 className="my-3">אמצעי תשלום</h1>
         <Form onSubmit={submitHandler}>
           <div className="mb-3">
             <Form.Check
@@ -50,7 +50,7 @@ const PaymentMethodScreen = () => {
             />
           </div>
           <div className="mb-3">
-            <Button type="submit">Continue</Button>
+            <Button type="submit">המשך</Button>
           </div>
         </Form>
       </div>
