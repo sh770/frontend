@@ -4,7 +4,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { Store } from '../Store';
 import { toast } from 'react-toastify';
-import { getError } from '../utilis';
+import { getError } from '../utils';
 import axios from 'axios';
 import ListGroup from 'react-bootstrap/ListGroup';
 import QRCode from "react-qr-code";
@@ -23,6 +23,7 @@ const reducer = (state, action) => {
             return state;
     }
 };
+
 export default function ProfileScreen() {
     const { state, dispatch: ctxDispatch } = useContext(Store);
     const { userInfo } = state;
@@ -32,6 +33,7 @@ export default function ProfileScreen() {
     const [code, setCode] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [randomCode, setRandomCode] = useState('');
+
     var [validEmail, setValidEmail] = useState(false);
     var [validCode, setValidCode] = useState(false);
 
@@ -150,16 +152,16 @@ export default function ProfileScreen() {
                         <form>
                             <Form.Group className="mb-3" controlId="code">
                                 <Form.Label>Check Email For Code / Scan The QR:</Form.Label>
-                                <div style={{ height: "auto", margin: "0 auto", maxWidth: 364, width: "100%" }}>
-                                    <QRCode
-                                        size={256}
-                                        style={{ height: "auto", maxWidth: "100%", width: "100%" }}
-                                        value={randomCode}
-                                        viewBox={`0 0 256 256`}
-                                        fgColor="gray"
-                                        bgColor="#000"
-                                    />
-                                </div>
+                               <div style={{ height: "auto", margin: "0 auto", maxWidth: 364, width: "100%" }}>
+                                <QRCode
+                                    size={256}
+                                    style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+                                    value={randomCode}
+                                    viewBox={`0 0 256 256`}
+                                    fgColor="gray"
+                                    bgColor="#000"
+                                />
+                               </div>
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="code">
                                 <Form.Label>Enter Code:</Form.Label>
@@ -205,3 +207,4 @@ export default function ProfileScreen() {
         </div >
     );
 }
+
