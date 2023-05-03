@@ -26,6 +26,8 @@ import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { getError } from './utilis';
 import axios from 'axios';
+import SearchScreen from './screen/SearchScreen';
+
 
 
 
@@ -133,7 +135,7 @@ function App() {
         >
          <Nav className="flex-column text-white w-100 p-2">
             <Nav.Item>
-              <strong>Categories</strong>
+              <strong>קטגוריות</strong>
             </Nav.Item>
             {categories.map((category) => (
               <Nav.Item key={category}>
@@ -158,6 +160,7 @@ function App() {
               <Route path="/order/:id" element={<OrderScreen />} />
               <Route path="/orderhistory" element={<OrderHistoryScreen />} />
               <Route path="/profile" element={<ProfileScreen />} />
+              <Route path="/search" element={<SearchScreen />} />
               <Route path='/' element={<HomeScreen />}></Route>
             </Routes>
           </Container>

@@ -14,6 +14,7 @@ const PaymentMethodScreen = () => {
   } = state;
 
   const [paymentMethodName, setPaymentMethod] = useState(
+    // paymentMethod === "PayPal"
     paymentMethod || "PayPal"
   );
 
