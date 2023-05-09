@@ -35,33 +35,33 @@ const reducer = (state, action) => {
 
 const prices = [
     {
-        name: 'from $50 to $200',
+        name: 'מ ₪50 עד ₪200',
         value: '50-200',
     },
     {
-        name: 'from $200 to $1000',
+        name: 'מ ₪200 עד ₪1000',
         value: '200-1000',
     },
 ];
 
 export const ratings = [
     {
-        name: '4 Stars & Up',
+        name: '4 כוכבים ומעלה',
         rating: 4,
     },
 
     {
-        name: '3 Stars & Up',
+        name: '3 כוכבים ומעלה',
         rating: 3,
     },
 
     {
-        name: '2 Stars & Up',
+        name: '2 כוכבים ומעלה',
         rating: 2,
     },
 
     {
-        name: '1 Star & Up',
+        name: 'כוכב 1 ומעלה',
         rating: 1,
     },
 ];
@@ -126,7 +126,7 @@ export default function SearchScreen() {
     return (
         <div>
             <Helmet>
-                <title>Search Products</title>
+                <title>חיפוש מוצרים</title>
             </Helmet>
             <Row>
                 <Col md={12}>
@@ -140,7 +140,7 @@ export default function SearchScreen() {
                             <Row className="justify-content-between mb-3" style={{ color: "white" }}>
                                 <Col md={6}>
                                     <div>
-                                        {countProducts === 0 ? 'No' : countProducts} Results
+                                        {countProducts === 0 ? 'אין' : countProducts} תוצאות
                                         {query !== 'all' && ' : ' + query}
                                         {category !== 'all' && ' : ' + category}
                                         {price !== 'all' && ' : Price ' + price}
@@ -150,40 +150,41 @@ export default function SearchScreen() {
                                             category !== 'all' ||
                                             rating !== 'all' ||
                                             price !== 'all' ? (
-                                            <Button                                            
+                                            <Button
                                                 variant="light"
-                                                onClick={() => navigate('/search')}                                                
-                                            >                                                                                           
-                                                <i className="fas fa-times-circle"></i>                                                
+                                                onClick={() => navigate('/search')}
+                                            >
+                                                <i className="fas fa-times-circle"></i>
                                             </Button>
                                         ) : null}
                                     </div>
                                 </Col>
                                 <Col className="text-end">
-                                    Sort by{' '}
+                                    מיין לפי{' '}
                                     <select
                                         value={order}
                                         onChange={(e) => {
                                             navigate(getFilterUrl({ order: e.target.value }));
                                         }}
                                     >
-                                        <option value="newest">Newest Arrivals</option>
-                                        <option value="lowest" defaultValue={"lowest"}>Price: Low to High</option>
-                                        <option value="highest">Price: High to Low</option>
-                                        <option value="toprated">Avg. Customer Reviews</option>
+                                        <option value="newest">עדכונים אחרונים</option>
+                                        <option value="lowest" defaultValue={"lowest"}>מחיר: מהנמוך לגבוה</option>
+                                        <option value="highest">מחיר: מהגבוה לנמוך</option>
+                                        <option value="toprated">ממוצע חוות דעת של לקוחות</option>
                                     </select>
 
                                     <br></br>
                                     <br></br>
                                     <div>
-                                        <h3>Price Range</h3>
+                                        <h3>טווח מחירים
+                                        </h3>
                                         <ul>
                                             <ol>
                                                 <Link
                                                     className={'all' === price ? 'text-bold' : ''}
                                                     to={getFilterUrl({ price: 'all' })}
                                                 >
-                                                    All
+                                                    הכל
                                                 </Link>
                                             </ol>
                                             {prices.map((p) => (
@@ -199,12 +200,12 @@ export default function SearchScreen() {
                                         </ul>
                                     </div>
                                     <div className='d-grid'>
-                                        <h4>Sort By Customer Reviews</h4>
+                                        <h4>מיין לפי ביקורות לקוחות</h4>
                                         <ul>
                                             {ratings.map((r) => (
 
                                                 <ol key={r.name} >
-                                                    <Link 
+                                                    <Link
                                                         to={getFilterUrl({ rating: r.rating })}
                                                         className={`${r.rating}` === `${rating}` ? 'text-bold' : ''}
                                                     >
@@ -226,7 +227,7 @@ export default function SearchScreen() {
                             </Row>
 
                             {products.length === 0 && (
-                                <MessageBox>No Product Found</MessageBox>
+                                <MessageBox>לא נמצא מוצר</MessageBox>
                             )}
 
                             <Row className="products-row">

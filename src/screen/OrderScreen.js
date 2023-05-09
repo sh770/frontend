@@ -81,7 +81,7 @@ export default function OrderScreen() {
                     }
                 );
                 dispatch({ type: 'PAY_SUCCESS', payload: data });
-                toast.success('ההזמנה משולמת');
+                toast.success('התשלום התקבל בהצלחה');
             } catch (err) {
                 dispatch({ type: 'PAY_FAIL', payload: getError(err) });
                 toast.error(getError(err));

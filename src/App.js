@@ -27,6 +27,9 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import { getError } from './utilis';
 import axios from 'axios';
 import SearchScreen from './screen/SearchScreen';
+import ProtectedRoute from './components/ProtectedRoute';
+import AdminRoute from './components/AdminRoute';
+import ProductListScreen from './screen/ProductListScreen';
 
 
 
@@ -79,9 +82,9 @@ function App() {
         <ToastContainer position="top-center" limit={1} />
         <header >
           <Navbar bg="dark" variant="dark" expand="lg">
-          <Button variant="dark" onClick={() => setSidebarIsOpen(!sidebarIsOpen)} >
-                <i className="fas fa-bars"></i>
-              </Button>&nbsp;
+            <Button variant="dark" onClick={() => setSidebarIsOpen(!sidebarIsOpen)} >
+              <i className="fas fa-bars"></i>
+            </Button>&nbsp;
 
             <Container>
               <LinkContainer to="/">
@@ -91,15 +94,19 @@ function App() {
               <Navbar.Collapse id="basic-navbar-nav">
                 <SearchBox />
                 <Nav className="me-auto  w-100  justify-content-end">
-                  <Link to="/cart" className="nav-link">
-                    עגלת הקניות
-                    {cart.cartItems.length > 0 && (
-                      <Badge pill bg="danger">
-                        {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
-                      </Badge>
-                    )}
-                  </Link>
-                  {userInfo ? (
+                  {userInfo?.isAdmin === false || !userInfo ? (
+                    <Link to="/cart" className="nav-link">
+                      עגלת הקניות
+                      {cart.cartItems.length > 0 && (
+                        <Badge pill bg="danger">
+                          {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
+                        </Badge>
+                      )}
+                    </Link>
+                  ) : userInfo?.isAdmin === true && (
+                    <span></span>
+                  )}
+                  {userInfo?.isAdmin === false ? (
                     <NavDropdown title={userInfo?.username} id="basic-nav-dropdown">
                       <LinkContainer to="/profile">
                         <NavDropdown.Item>פרופיל משתמש</NavDropdown.Item>
@@ -116,11 +123,36 @@ function App() {
                         התנתק
                       </Link>
                     </NavDropdown>
-                  ) : (
+                  ) : !userInfo && (
                     <Link className="nav-link" to="/signin">
                       התחברות
                     </Link>
                   )}
+                  {userInfo?.isAdmin && (
+                    <NavDropdown title="מנהל" id="admin-nav-dropdown">
+                      <LinkContainer to="/admin/products">
+                        <NavDropdown.Item>הצגת ועריכת מוצרים</NavDropdown.Item>
+                      </LinkContainer>
+                      <LinkContainer to="/admin/orders">
+                        <NavDropdown.Item>הצגת ועריכת הזמנות</NavDropdown.Item>
+                      </LinkContainer>
+                      <LinkContainer to="/admin/users">
+                        <NavDropdown.Item>הצגת ועריכת משתמשים</NavDropdown.Item>
+                      </LinkContainer>
+                      <NavDropdown.Divider />
+                      <LinkContainer to="/profile">
+                        <NavDropdown.Item>פרופיל מנהל</NavDropdown.Item>
+                      </LinkContainer>
+                      <Link
+                        className="dropdown-item"
+                        to="#signout"
+                        onClick={signoutHandler}
+                      >
+                        התנתק
+                      </Link>
+                    </NavDropdown>
+                  )}
+
                 </Nav>
               </Navbar.Collapse>
             </Container>
@@ -133,15 +165,15 @@ function App() {
               : 'side-navbar d-flex justify-content-between flex-wrap flex-column'
           }
         >
-         <Nav className="flex-column text-white w-100 p-2">
+          <Nav className="flex-column text-white w-100 p-2">
             <Nav.Item>
               <strong>קטגוריות</strong>
             </Nav.Item>
             {categories.map((category) => (
               <Nav.Item key={category}>
-                  <Link                
+                <Link
                   to={`/search?category=${category}`}
-                  onClick={() => setSidebarIsOpen(false)}>{category}</Link>    
+                  onClick={() => setSidebarIsOpen(false)}>{category}</Link>
               </Nav.Item>
             ))}
           </Nav>
@@ -157,10 +189,11 @@ function App() {
               <Route path="/signup" element={<SignupScreen />} />
               <Route path="/payment" element={<PaymentMethodScreen />} />
               <Route path="/placeorder" element={<PlaceOrderScreen />} />
-              <Route path="/order/:id" element={<OrderScreen />} />
-              <Route path="/orderhistory" element={<OrderHistoryScreen />} />
-              <Route path="/profile" element={<ProfileScreen />} />
+              <Route path="/order/:id" element={<ProtectedRoute> <OrderScreen /> </ProtectedRoute>} />
+              <Route path="/orderhistory" element={<ProtectedRoute> <OrderHistoryScreen /> </ProtectedRoute>} />
+              <Route path="/profile" element={<ProtectedRoute> <ProfileScreen /> </ProtectedRoute>} />
               <Route path="/search" element={<SearchScreen />} />
+              <Route path="/admin/products" element={<AdminRoute> <ProductListScreen /></AdminRoute>} />
               <Route path='/' element={<HomeScreen />}></Route>
             </Routes>
           </Container>
@@ -174,3 +207,4 @@ function App() {
 }
 
 export default App;
+
