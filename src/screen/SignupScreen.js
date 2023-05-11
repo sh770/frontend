@@ -56,48 +56,48 @@ const SignupScreen = () => {
     return (
         <Container className="small-container">
             <Helmet>
-                <title>Sign Up</title>
+                <title>רישום לאתר</title>
             </Helmet>
 
-            <h1 className="my-3">Sign Up</h1>
+            <h1 className="my-3">רישום לאתר</h1>
 
             <Form onSubmit={submitHandler}>
                 <Form.Group className="mb-3" controlId="firstName">
-                    <Form.Label>First Name</Form.Label>
+                    <Form.Label>שם פרטי</Form.Label>
                     <Form.Control onChange={(e) => setFirstName(e.target.value)} required />
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="lastName">
-                    <Form.Label>Last Name</Form.Label>
+                    <Form.Label>שם משפחה</Form.Label>
                     <Form.Control onChange={(e) => setLastName(e.target.value)} required />
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="username">
-                    <Form.Label>Username</Form.Label>
+                    <Form.Label>שם משתמש</Form.Label>
                     <Form.Control onChange={(e) => setUsername(e.target.value)} required />
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="email">
-                    <Form.Label>Email</Form.Label>
+                    <Form.Label>מייל</Form.Label>
                     <Form.Control type="email" required onChange={(e) => setEmail(e.target.value)} />
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="password">
-                    <Form.Label>Password</Form.Label>
+                    <Form.Label>סיסמה</Form.Label>
                     <Form.Control type="password" required onChange={(e) => setPassword(e.target.value)} />
 
                     <Form.Group className="mb-3" controlId="confirmPassword">
-                        <Form.Label>Confirm Password</Form.Label>
+                        <Form.Label>אימות סיסמה</Form.Label>
                         <Form.Control type="password" onChange={(e) => setConfirmPassword(e.target.value)} required />
                     </Form.Group>
                 </Form.Group>
 
                 <div className="mb-3">
-                    <Button type="submit">Sign Up</Button>
+                    <Button type="submit">רישום</Button>
                 </div>
                 <div className="mb-3">
-                    Already a user?{' '}
-                    <Link to={`/signin?redirect=${redirect}`}>Sign-In</Link>
+                    כבר רשום?{' '}
+                    <Link to={`/signin?redirect=${redirect}`}>התחברות</Link>
                 </div>
             </Form>
 

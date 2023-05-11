@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import LoadinBox from '../components/LoadinBox';
 import MessageBox from '../components/MessageBox';
+import { getError } from "../utilis.js";
 import { Store } from '../Store';
 
 
@@ -49,7 +50,9 @@ export default function ProductListScreen() {
                 });
 
                 dispatch({ type: 'FETCH_SUCCESS', payload: data });
-            } catch (err) { }
+            } catch (err) { 
+                dispatch({ type: "FETCH_FAIL", payload: getError(err) });
+            }
         };
         fetchData();
     }, [page, userInfo]);
