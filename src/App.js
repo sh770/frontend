@@ -1,4 +1,4 @@
-import 'react-devtools'
+// import 'react-devtools'
 import './App.css';
 import 'react-toastify/dist/ReactToastify.css';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
