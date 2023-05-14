@@ -1,4 +1,4 @@
-import React, { useContext, useReducer, useEffect} from "react";
+import React, { useContext, useReducer, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import Row from "react-bootstrap/Row";
@@ -33,6 +33,9 @@ const reducer = (state, action) => {
 };
 
 const ProductScreen = () => {
+  const [selectedImage, setSelectedImage] = useState('');
+
+
   const params = useParams();
   const { slug } = params;
   const [{ loading, error, product }, dispatch] = useReducer(reducer, {
@@ -54,31 +57,31 @@ const ProductScreen = () => {
     fetchData();
   }, [slug]);
 
-  const { state, dispatch: ctxDispatch} = useContext(Store);
+  const { state, dispatch: ctxDispatch } = useContext(Store);
   const { cart } = state;
   console.log(cart)
 
-  const addToCartHandler = async() => {
-    
+  const addToCartHandler = async () => {
+
     const existItem = cart.cartItems.find((x) => x._id === product._id);
-    const quantity = existItem ? existItem.quantity + 1 : 1; 
+    const quantity = existItem ? existItem.quantity + 1 : 1;
     const { data } = await axios.get(`/api/products/product/${product._id}`);
     console.log(data)
 
     if (data.countInStock < quantity) {
-        toast.info('המוצר אזל מהמלאי');
+      toast.info('המוצר אזל מהמלאי');
       return;
     }
 
     ctxDispatch({
       type: 'CART_ADD_ITEM',
-      payload: { ...product, quantity},
+      payload: { ...product, quantity },
     });
 
   };
 
   return loading ? (
-    <LoadinBox/>
+    <LoadinBox />
   ) : error ? (
     <MessageBox variant='danger'>{error}</MessageBox>
   ) : (
@@ -87,7 +90,7 @@ const ProductScreen = () => {
         <Col md={6}>
           <img
             className="img-large"
-            src={product.image}
+            src={selectedImage || product.image}
             alt={product.name}
           ></img>
         </Col>
@@ -106,6 +109,20 @@ const ProductScreen = () => {
               ></Rating>
             </ListGroup.Item>
             <ListGroup.Item>מחיר: ₪{product.price}</ListGroup.Item>
+            <ListGroup.Item>
+              <Row xs={1} md={2} className="g-2">
+                {[product.image, ...product.images].map((x) => (
+                  <Col key={x}>
+                    <Card>
+                      <Button className="thumbnail" type="button" variant="light" onClick={() => setSelectedImage(x)}
+                      >
+                        <Card.Img variant="top" src={x} alt="product" />
+                      </Button>
+                    </Card>
+                  </Col>
+                ))}
+              </Row>
+            </ListGroup.Item>
             <ListGroup.Item>תיאור: {product.description}</ListGroup.Item>
           </ListGroup>
         </Col>

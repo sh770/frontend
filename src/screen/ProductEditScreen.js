@@ -8,39 +8,39 @@ import Button from 'react-bootstrap/Button';
 import { toast } from 'react-toastify';
 import { getError } from "../utilis.js";
 import Form from 'react-bootstrap/Form';
-import { Container } from 'react-bootstrap';
+import { Card, Container, ListGroup } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 
 
 const reducer = (state, action) => {
     switch (action.type) {
-      case 'FETCH_REQUEST':
-        return { ...state, loading: true };
-      case 'FETCH_SUCCESS':
-        return { ...state, loading: false };
-      case 'FETCH_FAIL':
-        return { ...state, loading: false, error: action.payload };
-      case 'UPDATE_REQUEST':
-        return { ...state, loadingUpdate: true };
-      case 'UPDATE_SUCCESS':
-        return { ...state, loadingUpdate: false };
-      case 'UPDATE_FAIL':
-        return { ...state, loadingUpdate: false };
-      case 'UPLOAD_REQUEST':
-        return { ...state, loadingUpload: true, errorUpload: '' };
-      case 'UPLOAD_SUCCESS':
-        return {
-          ...state,
-          loadingUpload: false,
-          errorUpload: '',
-        };
-      case 'UPLOAD_FAIL':
-        return { ...state, loadingUpload: false, errorUpload: action.payload };
-  
-      default:
-        return state;
+        case 'FETCH_REQUEST':
+            return { ...state, loading: true };
+        case 'FETCH_SUCCESS':
+            return { ...state, loading: false };
+        case 'FETCH_FAIL':
+            return { ...state, loading: false, error: action.payload };
+        case 'UPDATE_REQUEST':
+            return { ...state, loadingUpdate: true };
+        case 'UPDATE_SUCCESS':
+            return { ...state, loadingUpdate: false };
+        case 'UPDATE_FAIL':
+            return { ...state, loadingUpdate: false };
+        case 'UPLOAD_REQUEST':
+            return { ...state, loadingUpload: true, errorUpload: '' };
+        case 'UPLOAD_SUCCESS':
+            return {
+                ...state,
+                loadingUpload: false,
+                errorUpload: '',
+            };
+        case 'UPLOAD_FAIL':
+            return { ...state, loadingUpload: false, errorUpload: action.payload };
+
+        default:
+            return state;
     }
-  };
+};
 
 
 export default function ProductListScreen() {
@@ -52,7 +52,7 @@ export default function ProductListScreen() {
     const { state } = useContext(Store);
     const { userInfo } = state;
 
-    const [{ loading, error, loadingUpdate }, dispatch] = useReducer(reducer, {
+    const [{ loading, error, loadingUpdate, loadingUpload }, dispatch] = useReducer(reducer, {
         loading: true,
         error: "",
 
@@ -67,6 +67,42 @@ export default function ProductListScreen() {
     const [countInStock, setCountInStock] = useState('');
     const [brand, setBrand] = useState('');
     const [description, setDescription] = useState('');
+
+    const uploadFileHandler = async (e, forImages) => {
+        const file = e.target.files[0];
+        const bodyFormData = new FormData();
+        bodyFormData.append('file', file);
+        try {
+            dispatch({ type: 'UPLOAD_REQUEST' });
+            const { data } = await axios.post('/api/upload', bodyFormData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    authorization: `Bearer ${userInfo.token}`,
+                },
+            });
+            dispatch({ type: 'UPLOAD_SUCCESS' });
+
+            if (forImages) {
+                setImages([...images, data.secure_url]);
+            } else {
+                setImage(data.secure_url);
+            }
+            toast.success('התמונה הועלתה בהצלחה. לחץ על עדכן כדי להחיל אותה');
+        } catch (err) {
+            toast.error(getError(err));
+            dispatch({ type: 'UPLOAD_FAIL', payload: getError(err) });
+        }
+    };
+
+
+    const deleteFileHandler = async (fileName, f) => {
+        console.log(fileName, f);
+        console.log(images);
+        console.log(images.filter((x) => x !== fileName));
+        setImages(images.filter((x) => x !== fileName));
+        toast.success('התמונה הוסרה בהצלחה. לחץ על עדכן כדי להחיל אותה');
+    };
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -120,7 +156,7 @@ export default function ProductListScreen() {
                 <title> עריכת מוצר{productId}</title>
             </Helmet>
             <h1> עריכת מוצר</h1>
-                <h3>{productId}</h3>
+            <h3>{productId}</h3>
 
             {loading ? (
                 <LoadinBox></LoadinBox>
@@ -153,19 +189,19 @@ export default function ProductListScreen() {
                         />
                     </Form.Group>
 
-                    {/* <Form.Group className="mb-3" controlId="imageFile">
-                        <Form.Label>Change Main Image</Form.Label>
+                    <Form.Group className="mb-3" controlId="imageFile">
+                        <Form.Label>שנה תמונה ראשית</Form.Label>
                         <Form.Control type="file" onChange={uploadFileHandler} />
-                        {loadingUpload && <LoadingBox></LoadingBox>}
+                        {loadingUpload && <LoadinBox></LoadinBox>}
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="additionalImage">
-                        <Form.Label>All Product Images</Form.Label>
-                        {images.length === 0 && image.length === 0 && <MessageBox>No Images</MessageBox>}
+                        <Form.Label>כל תמונות המוצר</Form.Label>
+                        {images.length === 0 && image.length === 0 && <MessageBox>אין תמונה</MessageBox>}
                         <Card>
                             <ListGroup variant="flush">
                                 {
                                     <ListGroup.Item key={image}>
-                                        Main Photo:
+                                        תמונה ראשית:
                                         <br></br>
                                         <img src={image} alt={image} width="200" />
                                     </ListGroup.Item>
@@ -184,13 +220,13 @@ export default function ProductListScreen() {
                         </Card>
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="additionalImageFile">
-                        <Form.Label>Upload More Images</Form.Label>
+                        <Form.Label>העלה עוד תמונות</Form.Label>
                         <Form.Control
                             type="file"
                             onChange={(e) => uploadFileHandler(e, true)}
                         />
-                        {loadingUpload && <LoadingBox></LoadingBox>}
-                    </Form.Group> */}
+                        {loadingUpload && <LoadinBox></LoadinBox>}
+                    </Form.Group>
 
                     <Form.Group className="mb-3" controlId="category">
                         <Form.Label>קטגוריה</Form.Label>
