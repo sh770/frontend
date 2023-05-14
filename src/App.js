@@ -30,6 +30,10 @@ import SearchScreen from './screen/SearchScreen';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminRoute from './components/AdminRoute';
 import ProductListScreen from './screen/ProductListScreen';
+import ProductEditScreen from './screen/ProductEditScreen';
+
+
+
 
 
 
@@ -194,6 +198,7 @@ function App() {
               <Route path="/profile" element={<ProtectedRoute> <ProfileScreen /> </ProtectedRoute>} />
               <Route path="/search" element={<SearchScreen />} />
               <Route path="/admin/products" element={<AdminRoute> <ProductListScreen /></AdminRoute>} />
+              <Route path="/admin/product/:id" element={<AdminRoute> <ProductEditScreen /> </AdminRoute>} />
               <Route path='/' element={<HomeScreen />}></Route>
             </Routes>
           </Container>
