@@ -1,208 +1,185 @@
-import React, { useContext, useEffect, useReducer, useState } from 'react';
-import { Helmet } from 'react-helmet-async';
+import React, { useEffect, useState } from 'react';
 import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import { Store } from '../Store';
-import { toast } from 'react-toastify';
 import { getError } from '../utilis';
+import { toast } from 'react-toastify';
 import axios from 'axios';
+import Button from 'react-bootstrap/esm/Button';
 import ListGroup from 'react-bootstrap/ListGroup';
-import QRCode from "react-qr-code";
+import { Helmet } from 'react-helmet-async';
+import { useNavigate } from "react-router-dom";
 
 
-const reducer = (state, action) => {
-    switch (action.type) {
-        case 'UPDATE_REQUEST':
-            return { ...state, loadingUpdate: true };
-        case 'UPDATE_SUCCESS':
-            return { ...state, loadingUpdate: false };
-        case 'UPDATE_FAIL':
-            return { ...state, loadingUpdate: false };
+const ResetScreen = () => { // screen_component
 
-        default:
-            return state;
+  const [randomCode, setRandomCode] = useState('');
+  const [code, setCode] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState('');
+  var [validEmail, setValidEmail] = useState(false);
+  var [validCode, setValidCode] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState('');
+
+  const navigate = useNavigate();
+  const websiteUrl = window.location.origin;
+
+
+  const generateCode = (length) => { // יצירת קוד
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
-};
-export default function ProfileScreen() {
-    const { state, dispatch: ctxDispatch } = useContext(Store);
-    const { userInfo } = state;
+    return result;
+  }
 
-    const [email, setEmail] = useState(!userInfo.email);
-    const [password, setPassword] = useState('');
-    const [code, setCode] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [randomCode, setRandomCode] = useState('');
-    var [validEmail, setValidEmail] = useState(false);
-    var [validCode, setValidCode] = useState(false);
+  useEffect(() => {
+    setRandomCode(generateCode(15));
 
-    const [{ loadingUpdate }, dispatch] = useReducer(reducer, {
-        loadingUpdate: false,
-    });
+  }, []);
+  // console.log(randomCode);
 
-    function generateCode(length) {
-        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        let result = '';
-        const charactersLength = characters.length;
-        for (let i = 0; i < length; i++) {
-            result += characters.charAt(Math.floor(Math.random() * charactersLength));
-        }
-        return result;
+
+
+  const codeCheck = () => {
+    if (code !== randomCode || code.length <= 0) {
+      toast.error("הקוד לא חוקי, בדוק את האימייל שלך");
+      return;
+    }
+    else {
+      setValidCode(true);
+    }
+  };
+
+
+  const confirmMail = async (e) => {
+    e.preventDefault();
+
+    try {
+      await axios.post('/api/users/reset', { email, },)
+      setValidEmail(true)
+      window.Email.send({
+        Host: "smtp.elasticemail.com",
+        Username: `${process.env.REACT_APP_MAIL_USERNAME}`,
+        Password: `${process.env.REACT_APP_MAIL_PASSWORD}`,
+        To: email,
+        From: `${process.env.REACT_APP_MAIL_USERNAME}`,
+        Subject: "הקוד לאיפוס הסיסמה",
+        Body: `
+          <div>
+          <h2>לכניסה לאתר ואיפוס סיסמה לחץ כאן</h2>
+          <a href=${websiteUrl} target="_blank" rel="noopener noreferrer">לאיפוס הסיסמה לחץ כאן</a><br><br>
+          <h3> הקוד שלך הוא </h3>
+          <h3> ${randomCode}</h3>
+          </div>                
+          `
+      });
+
+    } catch (err) {
+      toast.error("אימייל לא נמצא");
+    }
+  }
+
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    if (password !== confirmPassword) {
+      toast.error("סיסמה לא מתאימה");
+      return;
     }
 
-    useEffect(() => {
-        setRandomCode(generateCode(5));
-    }, []);
-
-    const sendCode = () => {
-
-        if (email !== userInfo.email) {
-            toast.error("האימייל אינו חוקי");
-            return;
-        }
-
-        else {
-            setValidEmail(true);
-            window.Email.send({
-                Host: "smtp.elasticemail.com",
-                Username: `${process.env.REACT_APP_MAIL_USERNAME}`,
-                Password: `${process.env.REACT_APP_MAIL_PASSWORD}`,
-                To: email,
-                From: `${process.env.REACT_APP_MAIL_USERNAME}`,
-                Subject: "Code For Password Reset",
-                Body: `Your Code Is: ${randomCode}`
-            });
-        }
+    else if (password.length < 1) {
+      toast.error("הסיסמה צריכה להיות בת 1 תווים לפחות");
+      return;
     }
 
+    else {
+      try {
+        await axios.put('/api/users/reset', { email, password },);
+        toast.success("הסיסמא עודכנה בהצלחה");
 
-    const codeCheck = () => {
-        console.log(randomCode);
-        if (code !== randomCode || code.length <= 0) {
-            toast.error("Code is not valid, Check email");
-            return;
-        }
-        else {
-            setValidCode(true);
-        }
-    }
+        setTimeout(() => {
+          navigate("/signin");
+        }, 1500);
 
-    const submitHandler = async (e) => {
-        e.preventDefault();
-        if (password !== confirmPassword) {
-            toast.error("Password does not match");
-            return;
-        }
-        else if (password.length < 1) {
-            toast.error("Password should be 8 characters at least");
-            return;
-        }
-        else {
-            try {
-                const { data } = await axios.put('/api/users/profile', { password, },
-                    { headers: { Authorization: `Bearer ${userInfo.token}` }, });
-
-                dispatch({
-                    type: 'UPDATE_SUCCESS',
-                });
-                ctxDispatch({ type: 'USER_SIGNIN', payload: data });
-                localStorage.setItem('userInfo', JSON.stringify(data));
-                toast.success('הסיסמא עודכנה בהצלחה');
-
-                setTimeout(() => {
-                    window.location.href = '/profile';
-                }, 1500);
-            } catch (err) {
-                dispatch({
-                    type: 'FETCH_FAIL',
-                });
-                toast.error(getError(err));
-            }
-        }
+      } catch (err) {
+        toast.error(getError(err));
+      }
     };
+  }
 
-    return (
-        <div className="container small-container">
-            <Helmet>
-                <title>{userInfo.username} פרופיל</title>
-            </Helmet>
 
-            <h1 className="my-3">הפרופיל של: {userInfo.username}</h1>
-            <ListGroup>
-                <ListGroup.Item>
-                    <h6 className="my-3">עדכון סיסמה:</h6>
-                </ListGroup.Item>
-                <ListGroup.Item>
-                    <form>
-                        <Form.Group className="mb-3" controlId="email">
-                            <Form.Label>הכנס מייל:</Form.Label>
-                            <Form.Control
-                                type="email"
-                                onChange={(e) => setEmail(e.target.value)}
-                                placeholder={userInfo.email}
-                                autoComplete="off"
-                            />
-                        </Form.Group>
-                        <div className="mb-3">
-                            <Button type="button" onClick={sendCode} disabled={!email.length || email !== userInfo.email}>שלח קוד</Button>
-                        </div>
-                    </form>
-                    {validEmail && (
-                        <form>
-                            <Form.Group className="mb-3" controlId="code">
-                                <Form.Label>בדוק את הקוד במייל / או סרוק את הברקוד:</Form.Label>
-                                <div style={{ height: "auto", margin: "0 auto", maxWidth: 364, width: "100%" }}>
-                                    <QRCode
-                                        size={256}
-                                        style={{ height: "auto", maxWidth: "100%", width: "100%" }}
-                                        value={randomCode}
-                                        viewBox={`0 0 256 256`}
-                                        fgColor="gray"
-                                        bgColor="#000"
-                                    />
-                                </div>
-                            </Form.Group>
-                            <Form.Group className="mb-3" controlId="code">
-                                <Form.Label>הכנס קוד:</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    onChange={(e) => setCode(e.target.value)}
-                                    autoComplete="off"
-                                    required
-                                />
-                            </Form.Group>
-                            <div className="mb-3">
-                                <Button type="button" onClick={codeCheck} disabled={!code.length}>בדוק קוד</Button>
-                            </div>
-                        </form>)}
-                    {validCode && (
-                        <form onSubmit={submitHandler}>
 
-                            <Form.Group className="mb-3" controlId="password">
-                                <Form.Label>הכנס סיסמה חדשה</Form.Label>
-                                <Form.Control
-                                    type="password"
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    autoComplete="off"
-                                    required
-                                />
-                            </Form.Group>
-                            <Form.Group className="mb-3" controlId="confirmPassword">
-                                <Form.Label>אמת סיסמה חדשה</Form.Label>
-                                <Form.Control
-                                    type="password"
-                                    onChange={(e) => setConfirmPassword(e.target.value)}
-                                    autoComplete="off"
-                                    required
-                                />
-                            </Form.Group>
-                            <div className="mb-3">
-                                <Button type="submit" disabled={!password.length || !confirmPassword.length}>שמור סיסמה</Button>
-                            </div>
-                        </form>
-                    )}
-                </ListGroup.Item>
-            </ListGroup >
-        </div >
-    );
+  return (
+    <div className="container small-container">
+      <Helmet>
+        <title>איפוס סיסמה</title>
+      </Helmet>
+      <ListGroup><br></br>
+        <ListGroup.Item>
+          <h1 className="my-3">איפוס סיסמה:</h1>
+        </ListGroup.Item>
+        <form>
+          <Form.Group className="mb-3" controlId="email">
+            <Form.Label className='font-weight-bold'>הכנס מייל:</Form.Label>
+            <Form.Control
+              type="email"
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder={"הכנס את כתובת המייל שלך:"}
+              autoComplete="off"
+            />
+            <Button type="button" onClick={confirmMail}>אמת</Button>
+          </Form.Group>
+        </form>
+
+        {validEmail && (
+          <form>
+            <Form.Group className="mb-3" controlId="code">
+              <Form.Label>בדוק את האימייל שלך והזן את הקוד:</Form.Label>
+              <Form.Control
+                type="text"
+                onChange={(e) => setCode(e.target.value)}
+                autoComplete="off"
+                required
+              />
+            </Form.Group>
+            <div className="mb-3">
+              <Button type="button" onClick={codeCheck} disabled={!code.length}>אימות קוד</Button>
+            </div>
+          </form>)}
+
+        {validCode && (
+          <Form onSubmit={submitHandler}>
+            <Form.Group className="mb-3" controlId="password">
+              <Form.Label>סיסמה חדשה</Form.Label>
+              <Form.Control
+                type="password"
+                onChange={(e) => setPassword(e.target.value)}
+                autoComplete="off"
+                required
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="confirmPassword">
+              <Form.Label>אימות סיסמה חדשה</Form.Label>
+              <Form.Control
+                type="password"
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                autoComplete="off"
+                required
+              />
+            </Form.Group>
+            <div className="mb-3">
+              <Button type="submit" disabled={!password.length || !confirmPassword.length}>שמירה</Button>
+            </div>
+          </Form>
+        )}
+      </ListGroup>
+    </div>
+  )
 }
 
+
+
+
+
+export default ResetScreen

@@ -170,7 +170,7 @@ export default function OrderScreen() {
                             </Card.Text>
                             {order.isPaid ? (
                                 <MessageBox variant="success">
-                                    Paid at {order.paidAt}
+                                     שולם בתאריך <br></br>{order.paidAt}
                                 </MessageBox>
                             ) : (
                                 <MessageBox variant="danger">לא שולם</MessageBox>
@@ -196,7 +196,7 @@ export default function OrderScreen() {
                                             <Col md={3}>
                                                 <span>{item.quantity}</span>
                                             </Col>
-                                            <Col md={3}>${item.price}</Col>
+                                            <Col md={3}>₪{item.price}</Col>
                                         </Row>
                                     </ListGroup.Item>
                                 ))}

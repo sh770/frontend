@@ -1,13 +1,11 @@
-// import 'react-devtools'
 import './App.css';
-import 'react-toastify/dist/ReactToastify.css';
+import { useContext, useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import HomeScreen from './screen/HomeScreen';
 import ProductScreen from './screen/ProductScreen';
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import { LinkContainer } from 'react-router-bootstrap';
-import { useContext, useState, useEffect } from 'react';
 import { Store } from './Store';
 import Badge from 'react-bootstrap/Badge';
 import CartScreen from './screen/CartScreen';
@@ -31,6 +29,11 @@ import ProtectedRoute from './components/ProtectedRoute';
 import AdminRoute from './components/AdminRoute';
 import ProductListScreen from './screen/ProductListScreen';
 import ProductEditScreen from './screen/ProductEditScreen';
+import OrderListScreen from './screen/OrderListScreen';
+import ResetScreen from './screen/ResetScreen';
+
+import 'react-toastify/dist/ReactToastify.css';
+
 
 
 
@@ -42,12 +45,19 @@ import ProductEditScreen from './screen/ProductEditScreen';
 
 
 function App() {
-
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { cart, userInfo } = state;
-
   const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
   const [categories, setCategories] = useState([]);
+
+  const signoutHandler = () => {
+    ctxDispatch({ type: "USER_SIGNOUT" });
+    localStorage.removeItem("userInfo");
+    localStorage.removeItem("shippingAddress");
+    localStorage.removeItem("paymentMethod");
+    localStorage.removeItem("cartItems");
+    window.location.href = "/signin";
+  };
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -61,36 +71,26 @@ function App() {
     fetchCategories();
   }, []);
 
-
-
-  const signoutHandler = () => {
-    ctxDispatch({ type: 'USER_SIGNOUT' });
-    localStorage.removeItem('userInfo');
-    localStorage.removeItem('shippingAddress');
-    localStorage.removeItem('paymentMethod');
-    localStorage.removeItem('cartItems');
-    window.location.href = '/signin';
-  };
-
   return (
     <BrowserRouter>
       <div
         className={
           sidebarIsOpen
-            ? 'd-flex flex-column site-container active-cont'
-            : 'd-flex flex-column site-container'
+            ? "d-flex flex-column site-container active-cont"
+            : "d-flex flex-column site-container"
         }
       >
-
-
         <ToastContainer position="top-center" limit={1} />
-        <header >
+        <header>
           <Navbar bg="dark" variant="dark" expand="lg">
-            <Button variant="dark" onClick={() => setSidebarIsOpen(!sidebarIsOpen)} >
-              <i className="fas fa-bars"></i>
-            </Button>&nbsp;
-
             <Container>
+              <Button
+                variant="dark"
+                onClick={() => setSidebarIsOpen(!sidebarIsOpen)}
+              >
+                <i className="fas fa-bars"></i>
+              </Button>
+              &nbsp;
               <LinkContainer to="/">
                 <Navbar.Brand>החנות בריאקט</Navbar.Brand>
               </LinkContainer>
@@ -111,7 +111,9 @@ function App() {
                     <span></span>
                   )}
                   {userInfo?.isAdmin === false ? (
-                    <NavDropdown title={userInfo?.username} id="basic-nav-dropdown">
+                    <NavDropdown title={userInfo?.username}
+                      id="basic-nav-dropdown"
+                      >
                       <LinkContainer to="/profile">
                         <NavDropdown.Item>פרופיל משתמש</NavDropdown.Item>
                       </LinkContainer>
@@ -165,8 +167,8 @@ function App() {
         <div
           className={
             sidebarIsOpen
-              ? 'active-nav side-navbar d-flex justify-content-between flex-wrap flex-column'
-              : 'side-navbar d-flex justify-content-between flex-wrap flex-column'
+              ? "active-nav side-navbar d-flex justify-content-between flex-wrap flex-column"
+              : "side-navbar d-flex justify-content-between flex-wrap flex-column"
           }
         >
           <Nav className="flex-column text-white w-100 p-2">
@@ -177,7 +179,10 @@ function App() {
               <Nav.Item key={category}>
                 <Link
                   to={`/search?category=${category}`}
-                  onClick={() => setSidebarIsOpen(false)}>{category}</Link>
+                  onClick={() => setSidebarIsOpen(false)}
+                >
+                  {category}
+                </Link>
               </Nav.Item>
             ))}
           </Nav>
@@ -189,6 +194,7 @@ function App() {
               <Route path='/product/:slug' element={<ProductScreen />}></Route>
               <Route path="/cart" element={<CartScreen />} />
               <Route path="/signin" element={<SigninScreen />} />
+              <Route path="/reset" element={<ResetScreen />} />
               <Route path="/shipping" element={<ShippingAddressScreen />} />
               <Route path="/signup" element={<SignupScreen />} />
               <Route path="/payment" element={<PaymentMethodScreen />} />
@@ -199,6 +205,7 @@ function App() {
               <Route path="/search" element={<SearchScreen />} />
               <Route path="/admin/products" element={<AdminRoute> <ProductListScreen /></AdminRoute>} />
               <Route path="/admin/product/:id" element={<AdminRoute> <ProductEditScreen /> </AdminRoute>} />
+              <Route path="/admin/orders" element={<AdminRoute> <OrderListScreen /> </AdminRoute>} />
               <Route path='/' element={<HomeScreen />}></Route>
             </Routes>
           </Container>
