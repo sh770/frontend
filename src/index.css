@@ -6,7 +6,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: rgb(132, 156, 201);
-  /* direction: rtl; */
+  direction: rtl;
 }
 
 code {
@@ -91,8 +91,9 @@ main {
   width: 240px;
   height: 100%;
   position: absolute;
-  left: -300px;
-  background-color: #100901;
+  /* left: -300px; */
+  right: -300px;
+  background-color: #9203a8;
   transition: 0.5s;
 }
 
@@ -101,11 +102,13 @@ main {
 }
 
 .active-cont {
-  margin-left: 240px;
+  margin-right: 240px;
+  /* margin-left: 240px; */
 }
 
 .active-nav {
-  left: 0;
+  right: 0;
+  /* left: 0; */
 }
 
 #button-search {
