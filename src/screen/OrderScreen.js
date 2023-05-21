@@ -190,12 +190,12 @@ export default function OrderScreen() {
                 Subject: `Your order is on the way`,
                 Body: `
             <div style="text-align:left;">
-            <h1>Order Delivered/h1>
+            <h1>ההזמנה שלך בדרך</h1>
             <p>
-            Hey ${data.data.name}, </p>
-            <p>Your order has been sent to the requested address.</p>
-            <p>The package should arrive in the next 14 days to your P.O box or postal office</p>
-            <h2>Shipping Address</h2>
+            היי ${order.shippingAddress.fullName}, </p>
+            <p>הזמנתך נשלחה לכתובת המבוקשת.</p>
+            <p>החבילה אמורה להגיע ב-14 הימים הקרובים לתיבת הדואר או לסניף הדואר שלך</p>
+            <h2>כתובת למשלוח</h2>
             <p>
            ,${order.shippingAddress.fullName}<br/>
             ,${order.shippingAddress.address}<br/>
@@ -203,12 +203,12 @@ export default function OrderScreen() {
             ,${order.shippingAddress.country}<br/>
            ,${order.shippingAddress.postalCode}<br/>
             </p>
-            <h2>[Order ${order._id}] (${order.createdAt.toString().substring(0, 10)})</h2>
+            <h2>[הזמנה ${order._id}] (${order.createdAt.toString().substring(0, 10)})</h2>
             <table>
             <thead>
             <tr>
-            <td><strong>Product</strong></td>
-            <td><strong>Quantity</strong></td>
+            <td><strong>מוצר</strong></td>
+            <td><strong>כמות</strong></td>
             <td><strong align="right">Price</strong></td>
             </thead>
             <tbody>
