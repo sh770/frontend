@@ -75,7 +75,7 @@ const OrderHistoryScreen = () => {
                             <th>תאריך הזמנה</th>
                             <th>הזמנה TOTAL</th>
                             <th>שולם</th>
-                            <th>נמסר</th>
+                            <th>נשלח</th>
                             <th>פעולות</th>
                         </tr>
                     </thead>

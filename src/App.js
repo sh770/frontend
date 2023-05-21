@@ -33,6 +33,8 @@ import OrderListScreen from './screen/OrderListScreen';
 import ResetScreen from './screen/ResetScreen';
 
 import 'react-toastify/dist/ReactToastify.css';
+import TermsOfServiceScreen from './screen/TermsOfServiceScreen';
+import UserListScreen from './screen/UserListScreen';
 
 
 
@@ -206,6 +208,8 @@ function App() {
               <Route path="/admin/products" element={<AdminRoute> <ProductListScreen /></AdminRoute>} />
               <Route path="/admin/product/:id" element={<AdminRoute> <ProductEditScreen /> </AdminRoute>} />
               <Route path="/admin/orders" element={<AdminRoute> <OrderListScreen /> </AdminRoute>} />
+              <Route path="/admin/users" element={ <AdminRoute> <UserListScreen /></AdminRoute> } />
+              <Route path="/terms-of-service" element={<TermsOfServiceScreen />} />
               <Route path='/' element={<HomeScreen />}></Route>
             </Routes>
           </Container>

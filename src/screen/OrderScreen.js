@@ -12,7 +12,7 @@ import { Store } from '../Store';
 import { getError } from '../utilis';
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
 import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { Button } from "react-bootstrap";
 
 
 function reducer(state, action) {
@@ -31,6 +31,19 @@ function reducer(state, action) {
             return { ...state, loadingPay: false };
         case 'PAY_RESET':
             return { ...state, loadingPay: false, successPay: false };
+        case 'DELIVER_REQUEST':
+            return { ...state, loadingDeliver: true };
+        case 'DELIVER_SUCCESS':
+            return { ...state, loadingDeliver: false, successDeliver: true };
+        case 'DELIVER_FAIL':
+            return { ...state, loadingDeliver: false };
+        case 'DELIVER_RESET':
+            return {
+                ...state,
+                loadingDeliver: false,
+                successDeliver: false,
+            };
+
 
         default:
             return state;
@@ -46,7 +59,7 @@ export default function OrderScreen() {
     const { id: orderId } = params;
     const navigate = useNavigate();
 
-    const [{ loading, error, order, successPay, loadingPay }, dispatch] =
+    const [{ loading, error, order, successPay, loadingPay, loadingDeliver, successDeliver }, dispatch] =
         useReducer(reducer, {
             loading: true,
             order: {},
@@ -82,6 +95,70 @@ export default function OrderScreen() {
                 );
                 dispatch({ type: 'PAY_SUCCESS', payload: data });
                 toast.success('התשלום התקבל בהצלחה');
+                window.Email.send({
+                    Host: "smtp.elasticemail.com",
+                    Username: `${process.env.REACT_APP_MAIL_USERNAME}`,
+                    Password: `${process.env.REACT_APP_MAIL_PASSWORD}`,
+                    To: `${userInfo.email}`,
+                    From: `${process.env.REACT_APP_MAIL_USERNAME}`,
+                    Subject: `New order ${order._id}`,
+                    Body: `<h1>Thanks for shopping with us</h1>
+                    <p>
+                    Hi ${order.shippingAddress.fullName},</p>
+                    <p>We have finished processing your order.</p>
+                    <h2>[Order ${order._id}] (${order.createdAt.toString().substring(0, 10)})</h2>
+                    <table>
+                    <thead>
+                    <tr>
+                    <td><strong>Product</strong></td>
+                    <td><strong>Quantity</strong></td>
+                    <td><strong align="right">Price</strong></td>
+                    </thead>
+                    <tbody>
+                    ${order.orderItems
+                            .map(
+                                (item) => `
+                      <tr>
+                      <td>${item.name}</td>
+                      <td align="center">${item.quantity}</td>
+                      <td align="right"> $${item.price.toFixed(2)}</td>
+                      </tr>
+                    `
+                            )
+                            .join('\n')}
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                    <td colspan="2">Items Price:</td>
+                    <td align="right"> $${order.itemsPrice.toFixed(2)}</td>
+                    </tr>
+                    <tr>
+                    <td colspan="2">Shipping Price:</td>
+                    <td align="right"> $${order.shippingPrice.toFixed(2)}</td>
+                    </tr>
+                    <tr>
+                    <td colspan="2"><strong>Total Price:</strong></td>
+                    <td align="right"><strong> $${order.totalPrice.toFixed(2)}</strong></td>
+                    </tr>
+                    <tr>
+                    <td colspan="2">Payment Method:</td>
+                    <td align="right">${order.paymentMethod}</td>
+                    </tr>
+                    </table>
+                    <h2>Shipping address</h2>
+                    <p>
+                    ${order.shippingAddress.fullName},<br/>
+                    ${order.shippingAddress.address},<br/>
+                    ${order.shippingAddress.city},<br/>
+                    ${order.shippingAddress.country},<br/>
+                    ${order.shippingAddress.postalCode}<br/>
+                    </p>
+                    <hr/>
+                    <p>
+                    Thanks for shopping with us.
+                    </p>
+                    `
+                });
             } catch (err) {
                 dispatch({ type: 'PAY_FAIL', payload: getError(err) });
                 toast.error(getError(err));
@@ -91,6 +168,95 @@ export default function OrderScreen() {
     function onError(err) {
         toast.error(getError(err));
     }
+
+    async function deliverOrderHandler() {
+        try {
+            dispatch({ type: 'DELIVER_REQUEST' });
+            const { data } = await axios.put(
+                `/api/orders/${order._id}/deliver`,
+                {},
+                {
+                    headers: { authorization: `Bearer ${userInfo.token}` },
+                }
+            );
+            dispatch({ type: 'DELIVER_SUCCESS', payload: data });
+
+            window.Email.send({
+                Host: "smtp.elasticemail.com",
+                Username: `${process.env.REACT_APP_MAIL_USERNAME}`,
+                Password: `${process.env.REACT_APP_MAIL_PASSWORD}`,
+                To: `${data.data.email}`,
+                From: `${process.env.REACT_APP_MAIL_USERNAME}`,
+                Subject: `Your order is on the way`,
+                Body: `
+            <div style="text-align:left;">
+            <h1>Order Delivered/h1>
+            <p>
+            Hey ${data.data.name}, </p>
+            <p>Your order has been sent to the requested address.</p>
+            <p>The package should arrive in the next 14 days to your P.O box or postal office</p>
+            <h2>Shipping Address</h2>
+            <p>
+           ,${order.shippingAddress.fullName}<br/>
+            ,${order.shippingAddress.address}<br/>
+            ,${order.shippingAddress.city}<br/>
+            ,${order.shippingAddress.country}<br/>
+           ,${order.shippingAddress.postalCode}<br/>
+            </p>
+            <h2>[Order ${order._id}] (${order.createdAt.toString().substring(0, 10)})</h2>
+            <table>
+            <thead>
+            <tr>
+            <td><strong>Product</strong></td>
+            <td><strong>Quantity</strong></td>
+            <td><strong align="right">Price</strong></td>
+            </thead>
+            <tbody>
+            ${order.orderItems
+                        .map(
+                            (item) => `
+              <tr>
+              <td>${item.name}</td>
+              <td align="center">${item.quantity}</td>
+              <td align="right"> $${item.price.toFixed(2)}</td>
+              </tr>
+            `
+                        )
+                        .join('\n')}
+            </tbody>
+            <tfoot>
+            <tr>
+            <td colspan="2">Items Price:</td>
+            <td align="right"> $${order.itemsPrice.toFixed(2)}</td>
+            </tr>
+            <tr>
+            <td colspan="2">Shipping Price:</td>
+            <td align="right"> $${order.shippingPrice.toFixed(2)}</td>
+            </tr>
+            <tr>
+            <td colspan="2"><strong>Total Price:</strong></td>
+            <td align="right"><strong> $${order.totalPrice.toFixed(2)}</strong></td>
+            </tr>
+            <tr>
+            <td colspan="2">Payment Method:</td>
+            <td align="right">${order.paymentMethod}</td>
+            </tr>
+            </table>
+            <hr/>
+            <p>
+            Thanks for shopping with us.
+            </p>
+            `});
+
+            toast.success('Order is delivered');
+        } catch (err) {
+            toast.error(getError(err));
+            dispatch({ type: 'DELIVER_FAIL' });
+        }
+    }
+
+
+
 
 
     useEffect(() => {
@@ -109,10 +275,13 @@ export default function OrderScreen() {
         if (!userInfo) {
             return navigate('/signin');
         }
-        if (!order._id || successPay || (order._id && order._id !== orderId)) {
+        if (!order._id || successPay || successDeliver || (order._id && order._id !== orderId)) {
             fetchOrder();
             if (successPay) {
                 dispatch({ type: 'PAY_RESET' });
+            }
+            if (successDeliver) {
+                dispatch({ type: 'DELIVER_RESET' });
             }
         } else {
             const loadPaypalScript = async () => {
@@ -130,10 +299,10 @@ export default function OrderScreen() {
             };
             loadPaypalScript();
         }
-    }, [order, userInfo, orderId, navigate, paypalDispatch, successPay]);
+    }, [order, userInfo, orderId, navigate, paypalDispatch, successPay, successDeliver]);
 
     return loading ? (
-        <LoadinBox></LoadinBox>
+        <LoadinBox />
     ) : error ? (
         <MessageBox variant="danger">{error}</MessageBox>
     ) : (
@@ -154,8 +323,8 @@ export default function OrderScreen() {
                                 ,{order.shippingAddress.country}
                             </Card.Text>
                             {order.isDelivered ? (
-                                <MessageBox variant="success">
-                                    נמסר ב {order.deliveredAt}
+                                <MessageBox variant="success">                                    
+                                    נשלח ב <br></br>{order.deliveredAt}
                                 </MessageBox>
                             ) : (
                                 <MessageBox variant="danger">לא נשלח</MessageBox>
@@ -170,7 +339,7 @@ export default function OrderScreen() {
                             </Card.Text>
                             {order.isPaid ? (
                                 <MessageBox variant="success">
-                                     שולם בתאריך <br></br>{order.paidAt}
+                                    שולם בתאריך <br></br>{order.paidAt}
                                 </MessageBox>
                             ) : (
                                 <MessageBox variant="danger">לא שולם</MessageBox>
@@ -239,7 +408,7 @@ export default function OrderScreen() {
                                         </Col>
                                     </Row>
                                 </ListGroup.Item>
-                                {!order.isPaid && (
+                                {!userInfo.isAdmin && !order.isPaid && (
                                     <ListGroup.Item>
                                         {isPending ? (
                                             <LoadinBox />
@@ -252,7 +421,17 @@ export default function OrderScreen() {
                                                 ></PayPalButtons>
                                             </div>
                                         )}
-                                        {loadingPay && <LoadinBox></LoadinBox>}
+                                        {loadingPay && <LoadinBox />}
+                                    </ListGroup.Item>
+                                )}
+                                {userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+                                    <ListGroup.Item>
+                                        {loadingDeliver && <LoadinBox/>}
+                                        <div className="d-grid">
+                                            <Button type="button" onClick={deliverOrderHandler}>
+                                                שלח הזמנה
+                                            </Button>
+                                        </div>
                                     </ListGroup.Item>
                                 )}
                             </ListGroup>

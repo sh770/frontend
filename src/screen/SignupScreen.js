@@ -11,7 +11,7 @@ import { getError } from '../utilis.js';
 
 const SignupScreen = () => {
     const navigate = useNavigate();
-    const { pathname,search } = useLocation();
+    const { pathname, search } = useLocation();
     console.log(pathname, search)
     const redirectInUrl = new URLSearchParams(search).get('redirect');
     const redirect = redirectInUrl ? redirectInUrl : '/';
@@ -90,6 +90,18 @@ const SignupScreen = () => {
                         <Form.Label>אימות סיסמה</Form.Label>
                         <Form.Control type="password" onChange={(e) => setConfirmPassword(e.target.value)} required />
                     </Form.Group>
+                    <Form.Group className="form-check mb-3" controlId="agreeTerms">
+                        <input
+                            type="checkbox"
+                            required
+                            className="form-check-input"
+                        />
+                        <Form.Label className="form-check-label" Style="margin-right:30px">
+                            על ידי לחיצה על הדברים הבאים
+                            , אתה מקבל את <Link to={`/terms-of-service`}>תנאי השימוש באתר</Link>.
+                        </Form.Label>
+                    </Form.Group>
+
                 </Form.Group>
 
                 <div className="mb-3">
