@@ -5,6 +5,9 @@ import axios from 'axios';
 import MessageBox from '../components/MessageBox';
 import LoadinBox from '../components/LoadinBox';
 import { Helmet } from 'react-helmet-async';
+import Button from 'react-bootstrap/Button';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -18,6 +21,19 @@ const reducer = (state, action) => {
             };
         case 'FETCH_FAIL':
             return { ...state, loading: false, error: action.payload };
+        case 'DELETE_REQUEST':
+            return { ...state, loadingDelete: true, successDelete: false };
+        case 'DELETE_SUCCESS':
+            return {
+                ...state,
+                loadingDelete: false,
+                successDelete: true,
+            };
+        case 'DELETE_FAIL':
+            return { ...state, loadingDelete: false };
+        case 'DELETE_RESET':
+            return { ...state, loadingDelete: false, successDelete: false };
+
 
         default:
             return state;
@@ -26,13 +42,34 @@ const reducer = (state, action) => {
 
 
 const UserListScreen = () => {
+    const navigate = useNavigate();
+
     const { state } = useContext(Store);
     const { userInfo } = state;
-
-    const [{ loading, error, users }, dispatch] = useReducer(reducer, {
+// eslint-disable-next-line
+    const [{ loading, error, users, loadingDelete, successDelete }, dispatch] = useReducer(reducer, {
         loading: true,
         error: '',
-    });
+        });
+
+    const deleteHandler = async (user) => {
+        if (window.confirm("האם אתה בטוח שברצונך למחוק?")) {
+            try {
+                dispatch({ type: 'DELETE_REQUEST' });
+                await axios.delete(`/api/users/${user._id}`, {
+                    headers: { Authorization: `Bearer ${userInfo.token}` },
+                });
+                toast.success("המשתמש נמחק בהצלחה");
+                dispatch({ type: 'DELETE_SUCCESS' });
+            } catch (err) {
+                toast.error(getError(err));
+                dispatch({
+                    type: 'DELETE_FAIL',
+                });
+            }
+        }
+    };
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -49,8 +86,14 @@ const UserListScreen = () => {
                 });
             }
         };
-        fetchData();
-    }, [userInfo]);
+        if (successDelete) {
+            dispatch({ type: 'DELETE_RESET' });
+        } else {
+            fetchData();
+        }
+    }, [userInfo, successDelete]);
+
+
 
 
     return (
@@ -68,7 +111,7 @@ const UserListScreen = () => {
                     <thead>
                         <tr>
                             <th>מזהה</th>
-                            <th>ש משתמש</th>
+                            <th>שם משתמש</th>
                             <th>אימייל</th>
                             <th>האם מנהל?</th>
                             <th>פעולה</th>
@@ -81,14 +124,24 @@ const UserListScreen = () => {
                                 <td>{user.username}</td>
                                 <td>{user.email}</td>
                                 <td>{user.isAdmin ? 'כן' : 'לא'}</td>
-                                <td></td>
+                                <td>
+                                    <Button type="button" variant="primary" onClick={() => navigate(`/admin/user/${user._id}`)}>
+                                        עריכה
+                                    </Button>
+                                    &nbsp;
+                                    <Button type="button" variant="danger" onClick={() => deleteHandler(user)}>
+                                        מחק
+                                    </Button>
+
+                                </td>
+
                             </tr>
                         ))}
                     </tbody>
                 </table>
             )}
         </div>
-       );
+    );
 
 }
 

@@ -35,6 +35,7 @@ import ResetScreen from './screen/ResetScreen';
 import 'react-toastify/dist/ReactToastify.css';
 import TermsOfServiceScreen from './screen/TermsOfServiceScreen';
 import UserListScreen from './screen/UserListScreen';
+import UserEditScreen from './screen/UserEditScreen';
 
 
 
@@ -209,6 +210,7 @@ function App() {
               <Route path="/admin/product/:id" element={<AdminRoute> <ProductEditScreen /> </AdminRoute>} />
               <Route path="/admin/orders" element={<AdminRoute> <OrderListScreen /> </AdminRoute>} />
               <Route path="/admin/users" element={ <AdminRoute> <UserListScreen /></AdminRoute> } />
+              <Route path="/admin/user/:id" element={<AdminRoute> <UserEditScreen /> </AdminRoute>} />
               <Route path="/terms-of-service" element={<TermsOfServiceScreen />} />
               <Route path='/' element={<HomeScreen />}></Route>
             </Routes>
