@@ -46,7 +46,7 @@ const UserListScreen = () => {
 
     const { state } = useContext(Store);
     const { userInfo } = state;
-// eslint-disable-next-line
+
     const [{ loading, error, users, loadingDelete, successDelete }, dispatch] = useReducer(reducer, {
         loading: true,
         error: '',
@@ -102,6 +102,9 @@ const UserListScreen = () => {
                 <title>משתמשים</title>
             </Helmet>
             <h1>משתמשים</h1>
+            
+            {loadingDelete && <LoadinBox />}
+
             {loading ? (
                 <LoadinBox></LoadinBox>
             ) : error ? (
