@@ -232,14 +232,14 @@ export default function ProductListScreen() {
                         <Form.Label>קטגוריה</Form.Label>
                         <Form.Select aria-label="Default select example" value={category} onChange={(e) => setCategory(e.target.value)} required>
                             <option>בחר קטגוריה</option>
-                            <option value="Electronics">אלקטרוניקה</option>
-                            <option value="Computers">מחשבים</option>
-                            <option value="Men's Clothing">בגדי גברים</option>
-                            <option value="Women's Clothing">בגדי נשים</option>
-                            <option value="Baby">תינוקות</option>
-                            <option value="Video-Games">משחקי וידאו</option>
-                            <option value="Audio">מוזיקה</option>
-                            <option value="Home-And-Kitchen">בית ומטבח</option>
+                            <option value="אלקטרוניקה">אלקטרוניקה</option>
+                            <option value="מחשבים">מחשבים</option>
+                            <option value="בגדי גברים">בגדי גברים</option>
+                            <option value="בגדי נשים">בגדי נשים</option>
+                            <option value="תינוקות">תינוקות</option>
+                            <option value="משחקי וידאו">משחקי וידאו</option>
+                            <option value="מוזיקה">מוזיקה</option>
+                            <option value="בית ומטבח">בית ומטבח</option>
                         </Form.Select>
 
                     </Form.Group>
