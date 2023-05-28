@@ -87,7 +87,7 @@ export default function ProductListScreen() {
             } else {
                 setImage(data.secure_url);
             }
-            toast.success('התמונה הועלתה בהצלחה. לחץ על עדכן כדי להחיל אותה');
+            toast.success("התמונה הועלתה בהצלחה. לחץ על עדכן כדי להחיל אותה");
         } catch (err) {
             toast.error(getError(err));
             dispatch({ type: 'UPLOAD_FAIL', payload: getError(err) });
@@ -100,7 +100,7 @@ export default function ProductListScreen() {
         console.log(images);
         console.log(images.filter((x) => x !== fileName));
         setImages(images.filter((x) => x !== fileName));
-        toast.success('התמונה הוסרה בהצלחה. לחץ על עדכן כדי להחיל אותה');
+        toast.success("התמונה הוסרה בהצלחה. לחץ על עדכן כדי להחיל אותה");
     };
 
 
@@ -141,7 +141,7 @@ export default function ProductListScreen() {
             dispatch({
                 type: 'UPDATE_SUCCESS',
             });
-            toast.success('המוצר עודכן בהצלחה');
+            toast.success("המוצר עודכן בהצלחה");
             navigate('/admin/products');
         } catch (err) {
             toast.error(getError(err));

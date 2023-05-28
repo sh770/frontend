@@ -94,7 +94,7 @@ export default function OrderScreen() {
                     }
                 );
                 dispatch({ type: 'PAY_SUCCESS', payload: data });
-                toast.success('התשלום התקבל בהצלחה');
+                toast.success("התשלום התקבל בהצלחה");
                 window.Email.send({
                     Host: "smtp.elasticemail.com",
                     Username: `${process.env.REACT_APP_MAIL_USERNAME}`,
@@ -248,7 +248,7 @@ export default function OrderScreen() {
             </p>
             `});
 
-            toast.success('Order is delivered');
+            toast.success("ההזמנה נמסרת לשליחה");
         } catch (err) {
             toast.error(getError(err));
             dispatch({ type: 'DELIVER_FAIL' });

@@ -80,14 +80,12 @@ export default function ProductListScreen() {
                     {},
                     { headers: { Authorization: `Bearer ${userInfo.token}` }, }
                 );
-                toast.success('המוצר נוצר בהצלחה');
+                toast.success("המוצר נוצר בהצלחה");
                 dispatch({ type: 'CREATE_SUCCESS' });
                 navigate(`/admin/product/${data.product._id}`);
             } catch (err) {
                 toast.error(getError(error));
-                dispatch({
-                    type: 'CREATE_FAIL',
-                });
+                dispatch({ type: 'CREATE_FAIL', });
             }
         }
     };
@@ -124,6 +122,7 @@ export default function ProductListScreen() {
                 dispatch({ type: 'FETCH_SUCCESS', payload: data });
             } catch (err) {
                 dispatch({ type: "FETCH_FAIL", payload: getError(err) });
+                // navigate("/signin");
             }
 
             if (successDelete) {

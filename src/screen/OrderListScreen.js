@@ -62,7 +62,7 @@ const OrderListScreen = () => {
                 await axios.delete(`/api/orders/${order._id}`, {
                     headers: { Authorization: `Bearer ${userInfo.token}` },
                 });
-                toast.success('ההזמנה נמחקה בהצלחה');
+                toast.success("ההזמנה נמחקה בהצלחה");
                 dispatch({ type: 'DELETE_SUCCESS' });
             } catch (err) {
                 toast.error(getError(error));
