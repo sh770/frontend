@@ -8,6 +8,7 @@ import { getError } from '../utilis';
 import axios from 'axios';
 import ListGroup from 'react-bootstrap/ListGroup';
 import QRCode from "react-qr-code";
+import LoadinBox from '../components/LoadinBox';
 
 
 const reducer = (state, action) => {
@@ -127,6 +128,7 @@ export default function ProfileScreen() {
             </Helmet>
 
             <h1 className="my-3">הפרופיל של: {userInfo.username}</h1>
+            {loadingUpdate && <LoadinBox/>}
             <ListGroup>
                 <ListGroup.Item>
                     <h6 className="my-3">עדכון סיסמה:</h6>
