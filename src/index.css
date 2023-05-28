@@ -135,9 +135,9 @@ button.thumbnail {
   color: rgb(249, 109, 109);
 }
 
-.prod-img>.card-img-top {
+/* .prod-img>.card-img-top {
   height: 400px;
-}
+} */
 
 .img-large {
   width: 80%;
